@@ -6,41 +6,65 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Image from 'react-bootstrap/esm/Image';
 import { Link } from "react-router-dom";
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
+import { postUserAccount } from '../Services/APIService';
+import { PostUserAccountDto } from "../Models/Dto/PostUserAccountDto";
 
-const RegisterForm: FC = () => {  
-    const [validated, setValidated] = useState<boolean>(false);
-    const [formData, setFormData] = useState({
+const RegisterForm: FC = () => {    
+
+      const validationSchema = Yup.object({
+        username: Yup.string()
+            .min(6, 'Måste vara minst 6 tecken')
+            .max(50, 'Får inte vara längre än 50 tecken')
+            .required('Obligatoriskt'),
+        firstName: Yup.string()
+            .min(2, 'Måste vara minst 2 tecken')
+            .max(50, 'Får inte vara längre än 50 tecken')
+            .matches(/^[a-öA-Ö]+$/, 'Bara bokstäver är tillåtna')
+            .required('Obligatoriskt'),
+        lastName: Yup.string()
+            .min(2, 'Måste vara minst 2 tecken')
+            .max(50, 'Får inte vara längre än 50 tecken')
+            .matches(/^[a-öA-Ö]+$/, 'Bara bokstäver är tillåtna')
+            .required('Obligatoriskt'),
+        password: Yup.string()
+            .min(8, 'Måste vara minst 8 tecken')
+            .matches(/[0-9]/, 'Måste vara minst en siffra')
+            .matches(/[a-ö]/, 'Måste vara minst en liten bokstav')
+            .matches(/[A-Ö]/, 'Måste vara minst en stor bokstav')
+            .required('Obligatoriskt'),
+        confirmPassword: Yup.string()
+            .oneOf([Yup.ref('password')], 'Lösenorden måste matcha')
+            .required('Obligatoriskt'),
+    });
+
+  const formik = useFormik({
+    initialValues: {
         username: '',
         firstName: '',
         lastName: '',
         password: '',
         confirmPassword: '',
-      });
-
-    const handleSubmit = (event: any) => {
-        const form = event.currentTarget;
-        if (form.checkValidity() === false) {
-          event.preventDefault();
-          event.stopPropagation();
+    },
+    validationSchema,
+    onSubmit: values => {
+        let postUser: PostUserAccountDto = {
+            userName: values.username,
+            firstName: values.firstName,
+            lastName: values.lastName,
+            password: values.password,
         }
-    
-        setValidated(true);
-        // skicka vidare
-        console.log(formData);
-      };
-
-    const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = event.target;
-        setFormData({
-            ...formData,
-            [name]: value,
-        });
-    };
-  
+        // skicka till api
+        // gör något med response
+        postUserAccount(postUser);
+        console.log(values);
+    },
+});  
 
 return(
     <Container className='border border-4 border-dark mt-3 p-2 '>
-        <Form noValidate validated={validated} onSubmit={handleSubmit}>
+        <Form noValidate onSubmit={formik.handleSubmit}>
             <Row className='align-items-center'>
                 <Col>
                     <h1 className='text-light mb-5 text-center'>Registrera ny användare</h1>
@@ -51,13 +75,14 @@ return(
                             type="text"
                             placeholder="Användarnamn"
                             name="username"
-                            value={formData.username}
-                            onChange={handleInputChange}
-                            required
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
+                            value={formik.values.username}
+                            isInvalid={formik.touched.username && !!formik.errors.username}
                         />
                         <Form.Control.Feedback type="invalid">
-                            Skriv in ett giltigt Användarnamn.
-                        </Form.Control.Feedback>  
+                            {formik.errors.username}
+                        </Form.Control.Feedback>
                     </Form.Group>
 
                     <Form.Group className="mb-3">
@@ -66,12 +91,13 @@ return(
                             type="text" 
                             placeholder="Tilltalsnamn"
                             name='firstName'
-                            value={formData.firstName}
-                            onChange={handleInputChange}
-                            required 
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
+                            value={formik.values.firstName}
+                            isInvalid={formik.touched.firstName && !!formik.errors.firstName}
                         />
                         <Form.Control.Feedback type="invalid">
-                            Skriv in ditt Tilltalsnamn(Förnamn).
+                            {formik.errors.firstName}
                         </Form.Control.Feedback>               
                     </Form.Group>
 
@@ -81,12 +107,13 @@ return(
                             type="text" 
                             placeholder="Efternamn" 
                             name='lastName'
-                            value={formData.lastName}
-                            onChange={handleInputChange}
-                            required 
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
+                            value={formik.values.lastName}
+                            isInvalid={formik.touched.lastName && !!formik.errors.lastName}
                         />
                         <Form.Control.Feedback type="invalid">
-                            Skriv in ditt Efternamn.
+                            {formik.errors.lastName}
                         </Form.Control.Feedback> 
                     </Form.Group>
 
@@ -96,28 +123,31 @@ return(
                             type="password" 
                             placeholder="Lösenord"
                             name='password'
-                            value={formData.password}
-                            onChange={handleInputChange}
-                            required        
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
+                            value={formik.values.password}
+                            isInvalid={formik.touched.password && !!formik.errors.password}
                         />
                         <Form.Control.Feedback type='invalid'>
-                           Ditt lösenord måste vara minst 8 tecken långt, en liten bokstav, en stor bokstav och ett specialtecken. 
-                        </Form.Control.Feedback>                        
+                            {formik.errors.password}
+                        </Form.Control.Feedback>
                     </Form.Group>
 
-                    <Form.Group className="mb-3">                     
+                    <Form.Group className="mb-3">
                         <Form.Control 
                             type="password" 
                             placeholder="Upprepa Lösenord" 
                             name='confirmPassword'
-                            value={formData.confirmPassword}
-                            onChange={handleInputChange}
-                            required 
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
+                            value={formik.values.confirmPassword}
+                            isInvalid={formik.touched.confirmPassword && !!formik.errors.confirmPassword}
                         />
                         <Form.Control.Feedback type='invalid'>
-                           Detta fält matchar inte lösenordet. 
+                            {formik.errors.confirmPassword}
                         </Form.Control.Feedback> 
                     </Form.Group>
+
 
                     <div className='text-center'>
                         <Link to="/signin">
@@ -129,10 +159,7 @@ return(
                         <Button className='m-1' variant="light" type="submit">
                             Registera
                         </Button>
-                    </div>
-                    
-
-                    
+                    </div>  
                 </Col>  
                 <Col>
                     <Image src="fflogo.png" fluid className='m-2'/>
