@@ -18,6 +18,11 @@ return(
                     <h1 className='text-light mb-5 text-center'>Registrera ny användare</h1>
 
                     <Form.Group className="mb-3">
+                        <Form.Label className='text-light'>Användarnamn</Form.Label>
+                        <Form.Control type="text" placeholder="Användarnamn" />               
+                    </Form.Group>
+
+                    <Form.Group className="mb-3">
                         <Form.Label className='text-light'>Tilltalsnamn</Form.Label>
                         <Form.Control type="text" placeholder="Tilltalsnamn" />               
                     </Form.Group>
@@ -43,7 +48,7 @@ return(
                             </Button>
                         </Link> 
 
-                        <Button className='mx-1' variant="light" type="submit">
+                        <Button className='m-1' variant="light" type="submit">
                             Registera
                         </Button>
                     </div>
