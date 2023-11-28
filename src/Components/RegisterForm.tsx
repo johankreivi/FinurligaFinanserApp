@@ -10,6 +10,7 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { postUserAccount } from '../Services/APIService';
 import { PostUserAccountDto } from "../Models/Dto/PostUserAccountDto";
+import { ResponseUserAccountDto } from '../Models/Dto/ResponseUserAccountDto';
 
 const RegisterForm: FC = () => {    
 
@@ -48,17 +49,20 @@ const RegisterForm: FC = () => {
         confirmPassword: '',
     },
     validationSchema,
-    onSubmit: values => {
+    onSubmit: async values => {
         let postUser: PostUserAccountDto = {
             userName: values.username,
             firstName: values.firstName,
             lastName: values.lastName,
             password: values.password,
         }
-        // skicka till api
-        // gör något med response
-        postUserAccount(postUser);
-        console.log(values);
+        try {
+            let userRepsonse: ResponseUserAccountDto = await postUserAccount(postUser);
+            console.log("Userresponse: " + userRepsonse);
+        } catch (error) {
+            console.log(error);
+        }
+        
     },
 });  
 
