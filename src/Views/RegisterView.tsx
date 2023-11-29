@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from 'react';
+import { FC } from 'react';
 import RegisterForm from '../Components/RegisterForm';
 import { IFormProps } from '../Models/Interfaces/IFormProps';
 
