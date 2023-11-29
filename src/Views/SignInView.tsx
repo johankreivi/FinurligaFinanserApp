@@ -1,11 +1,11 @@
 import { FC, useEffect, useState } from 'react';
 import SignInForm from '../Components/SignInForm';
+import { IFormProps } from '../Models/Interfaces/IFormProps';
 
-const SignInView: FC = () => {  
-
+const SignInView: FC<IFormProps> = (props : IFormProps) => {
 
 return(
-        <SignInForm />
+        <SignInForm handleAlert={props.handleAlert} setAlertMessage={props.setAlertMessage} setIsAuthorized={props.setIsAuthorized} />
     );
 }
 

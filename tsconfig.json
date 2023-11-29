@@ -23,5 +23,5 @@
   "include": [
     "src",
     "cypress.d.ts"
-  ]
+, "cypress/component/RegisterForm.cy.tsx", "cypress/component/SignInForm.cy.tsx"  ]
 }
