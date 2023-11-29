@@ -1,23 +1,23 @@
-import { FC, useEffect, useState } from 'react';
+import { FC } from 'react';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Image from 'react-bootstrap/esm/Image';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { postUserAccount } from '../Services/APIService';
 import { PostUserAccountDto } from "../Models/Dto/PostUserAccountDto";
 import { ResponseUserAccountDto } from '../Models/Dto/ResponseUserAccountDto';
-import Alert from 'react-bootstrap/Alert';
-import { Fade } from 'react-bootstrap';
-import { set } from 'cypress/types/lodash';
 
-const RegisterForm: FC = () => {    
-  const [showAlert, setShowAlert] = useState(false);
-  const [alertSuccess, setAlertSuccess] = useState(false);
+interface IRegisterFormProps {
+    handleAlert: (success: boolean) => void;
+}
+
+const RegisterForm: FC< IRegisterFormProps > = (props) => {    
+  const navigate = useNavigate();
 
     const validationSchema = Yup.object({
         username: Yup.string()
@@ -63,18 +63,13 @@ const RegisterForm: FC = () => {
         }
         try {
             let userRepsonse: ResponseUserAccountDto = await postUserAccount(postUser);
-            console.log("Userresponse: " + userRepsonse.userName);
-            setAlertSuccess(true);
-            setShowAlert(true);
-            setTimeout(() => {
-                setShowAlert(false);
-            }, 3000);
+            if (userRepsonse.id !== undefined) {
+                props.handleAlert(true);
+                navigate('/signin');
+            }
+
         } catch (error) {
-            setAlertSuccess(false);
-            setShowAlert(true);
-            setTimeout(() => {
-                setShowAlert(false);
-            }, 3000);
+            props.handleAlert(false);
             console.log(error);
         }
         
@@ -83,19 +78,6 @@ const RegisterForm: FC = () => {
 
 return(
     <Container className='border border-4 border-dark mt-3 p-2 '>
-        {showAlert ?
-        <Alert variant={
-            alertSuccess ? 'success' : 'danger'
-        } onClose={() => setShowAlert(false)} dismissible className='position-absolute start-50 translate-middle top-0 mt-5'>
-            {alertSuccess ?
-            "Ditt konto har skapats!"
-            :
-            "Något gick fel, försök igen!"
-            }
-        </Alert>
-            :
-            null
-        }
         <Form noValidate onSubmit={formik.handleSubmit}>
             <Row className='align-items-center'>
                 <Col>

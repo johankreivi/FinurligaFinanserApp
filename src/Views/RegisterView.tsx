@@ -1,10 +1,14 @@
 import { FC, useEffect, useState } from 'react';
 import RegisterForm from '../Components/RegisterForm';
 
-const RegisterView: FC = () => {  
+interface IRegisterViewProps {
+    handleAlert: (success: boolean) => void;
+}
+
+const RegisterView: FC<IRegisterViewProps> = (props) => {  
 
 return(
-        <RegisterForm />   
+        <RegisterForm handleAlert={props.handleAlert}/>
     );
 }
 
