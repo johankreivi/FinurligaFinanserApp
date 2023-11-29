@@ -11,10 +11,15 @@ import * as Yup from 'yup';
 import { postUserAccount } from '../Services/APIService';
 import { PostUserAccountDto } from "../Models/Dto/PostUserAccountDto";
 import { ResponseUserAccountDto } from '../Models/Dto/ResponseUserAccountDto';
+import Alert from 'react-bootstrap/Alert';
+import { Fade } from 'react-bootstrap';
+import { set } from 'cypress/types/lodash';
 
 const RegisterForm: FC = () => {    
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertSuccess, setAlertSuccess] = useState(false);
 
-      const validationSchema = Yup.object({
+    const validationSchema = Yup.object({
         username: Yup.string()
             .min(6, 'Måste vara minst 6 tecken')
             .max(50, 'Får inte vara längre än 50 tecken')
@@ -58,8 +63,18 @@ const RegisterForm: FC = () => {
         }
         try {
             let userRepsonse: ResponseUserAccountDto = await postUserAccount(postUser);
-            console.log("Userresponse: " + userRepsonse);
+            console.log("Userresponse: " + userRepsonse.userName);
+            setAlertSuccess(true);
+            setShowAlert(true);
+            setTimeout(() => {
+                setShowAlert(false);
+            }, 3000);
         } catch (error) {
+            setAlertSuccess(false);
+            setShowAlert(true);
+            setTimeout(() => {
+                setShowAlert(false);
+            }, 3000);
             console.log(error);
         }
         
@@ -68,6 +83,19 @@ const RegisterForm: FC = () => {
 
 return(
     <Container className='border border-4 border-dark mt-3 p-2 '>
+        {showAlert ?
+        <Alert variant={
+            alertSuccess ? 'success' : 'danger'
+        } onClose={() => setShowAlert(false)} dismissible className='position-absolute start-50 translate-middle top-0 mt-5'>
+            {alertSuccess ?
+            "Ditt konto har skapats!"
+            :
+            "Något gick fel, försök igen!"
+            }
+        </Alert>
+            :
+            null
+        }
         <Form noValidate onSubmit={formik.handleSubmit}>
             <Row className='align-items-center'>
                 <Col>
