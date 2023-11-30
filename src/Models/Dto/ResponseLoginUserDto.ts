@@ -1,5 +1,6 @@
 export type ResponseLoginUserDto = {
-    userName: string;
     isAuthorized: boolean;
-    message: string;
+    userId?: number
+    userName?: string;
+    message?: string;
 };

@@ -2,10 +2,12 @@ import { FC, useEffect } from 'react';
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Container from 'react-bootstrap/Container'
-import { IFormProps } from '../Models/Interfaces/IFormProps';
+import { IRegisterFormProps } from '../Models/Interfaces/IRegisterFormProps';
 import { useNavigate } from 'react-router-dom';
+import Header from '../Components/Header';
+import CreateBankAccountForm from '../Components/CreateBankAccountForm';
 
-const Home: FC<IFormProps> = (props) => {  
+const Home: FC<IRegisterFormProps> = (props) => {  
     
     const redirect = useNavigate();
 
@@ -16,14 +18,18 @@ const Home: FC<IFormProps> = (props) => {
     }, [props.getIsAuthorized?.isAuthorized, redirect]);
 
 return(
-
-    <Container>
+    <Container fluid style={{color: 'white'}}>
+        <Header userName={'Bobo'} balance={0} />
+        
         <Row>
             <Col>
-                <h1 className='text-light text-center'>Du är inloggad som: {props.getIsAuthorized?.userName} </h1>             
+                
             </Col>
         </Row>
-    </Container>       
+        <Row>
+            <CreateBankAccountForm handleAlert={props.handleAlert} setAlertMessage={props.setAlertMessage} userId={props.getIsAuthorized?.userId} userName='Bobo' />
+        </Row>
+    </Container>
     );
 }
 

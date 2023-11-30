@@ -8,12 +8,13 @@ import Image from 'react-bootstrap/esm/Image';
 import { Link, useNavigate } from "react-router-dom";
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { postUserAccount } from '../Services/APIService';
+import { postLoginUser, postUserAccount } from '../Services/APIService';
 import { PostUserAccountDto } from "../Models/Dto/PostUserAccountDto";
 import { ResponseUserAccountDto } from '../Models/Dto/ResponseUserAccountDto';
-import { IFormProps } from '../Models/Interfaces/IFormProps';
+import { IRegisterFormProps } from '../Models/Interfaces/IRegisterFormProps';
+import { ResponseLoginUserDto } from '../Models/Dto/ResponseLoginUserDto';
 
-const RegisterForm: FC< IFormProps > = (props) => {    
+const RegisterForm: FC< IRegisterFormProps > = (props) => {    
   const navigate = useNavigate();
 
     const validationSchema = Yup.object({
@@ -58,25 +59,41 @@ const RegisterForm: FC< IFormProps > = (props) => {
             lastName: values.lastName,
             password: values.password,
         }
+
+        
         try {
-            let userRepsonse: ResponseUserAccountDto = await postUserAccount(postUser);
-            if (userRepsonse.id !== undefined) {
-                props.setAlertMessage('Ditt konto har skapats!');
-                props.handleAlert(true);
+            let userResponse: ResponseUserAccountDto = await postUserAccount(postUser);
+            if (userResponse.id !== undefined) {                
+                let loginResponse: ResponseLoginUserDto = await postLoginUser({ 
+                    userName: values.username, 
+                    password: values.password
+                });
+                
+                if (loginResponse.isAuthorized) {
+                    props.setIsAuthorized(loginResponse);
+                    props.setAlertMessage(userResponse.message);
+                    props.handleAlert(true);
+                    navigate('/Home');
+                } 
+                else {
+                    props.setAlertMessage('Det gick inte att skapa kontot.');
+                    props.handleAlert(false);
+                    navigate('/'); 
+                }
+            }
+            else{
                 navigate('/');
             }
-
         } catch (error) {
             props.setAlertMessage('Något gick fel, försök igen!');
             props.handleAlert(false);
             console.log(error);
         }
-        
-    },
-});  
+    }
+});
 
 return(
-    <Container className='border border-4 border-dark mt-3 p-2 '>
+    <Container className='p-2 '>
         <Form noValidate onSubmit={formik.handleSubmit}>
             <Row className='align-items-center'>
                 <Col>
@@ -130,7 +147,7 @@ return(
                         </Form.Control.Feedback> 
                     </Form.Group>
 
-                    <Form.Group className="mb-1">
+                    <Form.Group className="mb-3">
                         <Form.Label className='text-light'>Lösenord</Form.Label>
                         <Form.Control 
                             type="password" 
@@ -162,14 +179,14 @@ return(
                     </Form.Group>
 
 
-                    <div className='text-center'>
-                        <Link to="/signin">
-                            <Button variant="light" className=''>
-                                Har redan ett användarkonto? Logga in
+                    <div className="text-center d-flex justify-content-between">
+                        <Link to="/">
+                            <Button variant="light" className='ms-5'>
+                                Avbryt
                             </Button>
                         </Link> 
 
-                        <Button className='m-1' variant="light" type="submit">
+                        <Button className='me-5' variant="light" type="submit">
                             Registera
                         </Button>
                     </div>  

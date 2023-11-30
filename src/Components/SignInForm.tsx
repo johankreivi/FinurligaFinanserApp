@@ -5,14 +5,14 @@ import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Image from 'react-bootstrap/esm/Image';
-import { Link, useNavigate } from "react-router-dom";
-import { IFormProps } from '../Models/Interfaces/IFormProps';
+import { useNavigate } from "react-router-dom";
+import { IRegisterFormProps } from '../Models/Interfaces/IRegisterFormProps';
 import { useFormik } from 'formik';
 import { PostLoginUserDto } from '../Models/Dto/PostLoginUserDto';
 import { postLoginUser } from '../Services/APIService';
 import { ResponseLoginUserDto } from '../Models/Dto/ResponseLoginUserDto';
 
-const SignInForm: FC<IFormProps> = (props) => { 
+const SignInForm: FC<IRegisterFormProps> = (props) => { 
 const redirect = useNavigate();
 const formik = useFormik({
     initialValues: {
@@ -42,7 +42,7 @@ const formik = useFormik({
 });
 
 return(
-    <Container className='border border-4 border-dark mt-3 p-2 text-center '>
+    <Container className='p-2 text-center '>
         <Form noValidate onSubmit={formik.handleSubmit}>
             <Row className='align-items-center'>
                 <Col>
@@ -79,17 +79,10 @@ return(
                             {formik.errors.password}
                         </Form.Control.Feedback>
                     </Form.Group>
-
-                    <Link to="/register">
-                        <Button variant="light">
-                            Inget konto? Registera dig
-                        </Button>
-                    </Link>
-
                     <Button className='m-2' variant="light" type="submit">
                         Logga in
                     </Button>
-                    
+                    <p className='text-white'>Inte medlem?<a href="/register" className="badge badge-secondary px-0 m-1">Klicka här</a> för att registrera.</p>
                 </Col>  
                 <Col>
                     <Image src="fflogo.png" fluid className='m-2'/>

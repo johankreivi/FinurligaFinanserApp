@@ -1,6 +1,7 @@
 import axios from "axios";
 import { PostUserAccountDto } from "../Models/Dto/PostUserAccountDto";
 import { PostLoginUserDto } from "../Models/Dto/PostLoginUserDto";
+import { PostBankAccountDto } from "../Models/Dto/PostBankAccountDto";
 
 const LOCALHOST = 'https://localhost:7030/api'
 
@@ -22,4 +23,14 @@ export const postLoginUser = async (userAccount: PostLoginUserDto) => {
     } catch (error) {     
         console.log('Error when logging in user: '+error)
     }    
-    };
+};
+
+export const postBankAccount = async (bankAccount: PostBankAccountDto) => {
+    try {   
+        return await axios.post(`${LOCALHOST}/BankAccount/CreateBankAccount`, bankAccount)
+                          .then(response => response.data);
+    
+    } catch (error) {     
+        console.log('Error when creating bankaccount: '+error)
+    }    
+}
