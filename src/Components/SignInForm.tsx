@@ -26,12 +26,7 @@ const formik = useFormik({
         }
 
         try {
-            let response : ResponseLoginUserDto = await postLoginUser(postLogin);
-            /*let response : ResponseLoginUserDto = {
-                isAuthorized: true,
-                userName: 'Testanvändare',
-                message: 'Testmeddelande',
-            }*/
+            let response : ResponseLoginUserDto = await postLoginUser(postLogin);         
             if(response.isAuthorized){
                 props.handleAlert(true);
                 props.setAlertMessage('Inloggning lyckades! Välkommen ' + response.userName + '!');
