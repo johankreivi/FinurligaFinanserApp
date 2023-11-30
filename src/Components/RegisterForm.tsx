@@ -11,12 +11,9 @@ import * as Yup from 'yup';
 import { postUserAccount } from '../Services/APIService';
 import { PostUserAccountDto } from "../Models/Dto/PostUserAccountDto";
 import { ResponseUserAccountDto } from '../Models/Dto/ResponseUserAccountDto';
+import { IFormProps } from '../Models/Interfaces/IFormProps';
 
-interface IRegisterFormProps {
-    handleAlert: (success: boolean) => void;
-}
-
-const RegisterForm: FC< IRegisterFormProps > = (props) => {    
+const RegisterForm: FC< IFormProps > = (props) => {    
   const navigate = useNavigate();
 
     const validationSchema = Yup.object({
@@ -64,11 +61,13 @@ const RegisterForm: FC< IRegisterFormProps > = (props) => {
         try {
             let userRepsonse: ResponseUserAccountDto = await postUserAccount(postUser);
             if (userRepsonse.id !== undefined) {
+                props.setAlertMessage('Ditt konto har skapats!');
                 props.handleAlert(true);
-                navigate('/signin');
+                navigate('/');
             }
 
         } catch (error) {
+            props.setAlertMessage('Något gick fel, försök igen!');
             props.handleAlert(false);
             console.log(error);
         }

@@ -1,14 +1,11 @@
-import { FC, useEffect, useState } from 'react';
+import { FC } from 'react';
 import RegisterForm from '../Components/RegisterForm';
+import { IFormProps } from '../Models/Interfaces/IFormProps';
 
-interface IRegisterViewProps {
-    handleAlert: (success: boolean) => void;
-}
-
-const RegisterView: FC<IRegisterViewProps> = (props) => {  
+const RegisterView: FC<IFormProps> = (props) => {  
 
 return(
-        <RegisterForm handleAlert={props.handleAlert}/>
+        <RegisterForm handleAlert={props.handleAlert} setAlertMessage={props.setAlertMessage} />
     );
 }
 
