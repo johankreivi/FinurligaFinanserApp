@@ -1,27 +1,35 @@
 import { FC } from 'react';
-import Container from 'react-bootstrap/Container'
-import { Button, Nav, Navbar } from 'react-bootstrap';
+import Container from 'react-bootstrap/Container';
+import { Button, Navbar } from 'react-bootstrap';
 import { Link } from "react-router-dom";
 import { IHeaderProps } from '../Models/Interfaces/IHeaderProps';
 
 const Header: FC<IHeaderProps> = (props) => {  
-return(
-    <Navbar bg="dark" variant="dark" className='mx-0 px-0'>
-        <Container>
-            <Nav className="w-100 flex d-flex justify-content-between">
-            <Navbar.Brand href="#home">Finurliga Finanser</Navbar.Brand>
-                               
-            <h1>{props.userName}</h1>
-            <h1>{props.balance} kr</h1>
-            <Link to="/">
-                    <Button className='m-2' variant='light'>
-                        Logga ut
-                    </Button>
-            </Link>
-            </Nav>
-
-        </Container>
-    </Navbar>     
+    return (
+        <Navbar bg="dark" variant="dark" expand="lg" className='mx-0 px-0'>
+            <Container fluid>
+                    <Navbar.Brand>
+                        <img
+                            src="/fflogo.png" 
+                            width="auto" 
+                            height="80" 
+                            className="d-inline-block align-top"
+                            alt="FF logo"
+                        />
+                        
+                    </Navbar.Brand>                    
+                    <div style={{ border: '1px solid white', borderRadius: '10px' }}>               
+                        <h3 style={{padding: '10px'}}>{props.userName} {props.balance} kr</h3>
+                    </div>
+                    <h1>Finurliga Finanser</h1>
+                    <Button className='m-2' onClick={props.handleShowModal}>Skapa bankkonto</Button>
+                    <Link to="/">
+                        <Button className='m-2' variant='light'>
+                            Logga ut
+                        </Button>
+                    </Link>            
+            </Container>
+        </Navbar>     
     );
 }
 

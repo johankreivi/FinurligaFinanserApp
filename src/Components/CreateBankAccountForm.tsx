@@ -39,25 +39,16 @@ const CreateBankAccountForm: FC<ICreateBankAccountFormProps> = (props) => {
             console.log(error);
         }
     }
-});
-    
-    const [show, setShow] = useState(false);
+});    
 
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
+const handleSubmit = () => {
+    props.handleClose(); 
+    formik.handleSubmit(); 
+}
 
-    const handleSubmit = () =>{
-        handleClose();
-        formik.handleSubmit();
-    }
-
-    return(
-        <>
-      <Button style={{width: '10%'}} variant="primary" onClick={handleShow}>
-        Skapa bankkonto
-      </Button>
-
-      <Modal show={show} onHide={handleClose}>
+return (
+    <>        
+        <Modal show={props.show} onHide={props.handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>Skapa bankkonto</Modal.Title>
         </Modal.Header>
@@ -86,16 +77,16 @@ const CreateBankAccountForm: FC<ICreateBankAccountFormProps> = (props) => {
         </Form>
 
         </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Avbryt
-          </Button>
-          <Button variant="primary" onClick={handleSubmit}>
-            Bekräfta
-          </Button>
-        </Modal.Footer>
-      </Modal>
+        <Modal.Footer>          
+                <Button variant="secondary" onClick={props.handleClose}>
+                    Avbryt
+                </Button>
+                <Button variant="primary" onClick={handleSubmit}>
+                    Bekräfta
+                </Button>
+            </Modal.Footer>
+        </Modal>
     </>
-    );
+);
 }
 export default CreateBankAccountForm;
