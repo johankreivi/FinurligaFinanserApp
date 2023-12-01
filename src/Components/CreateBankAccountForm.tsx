@@ -7,13 +7,13 @@ import { postBankAccount } from "../Services/APIService";
 import { ResponseBankAccountDto } from "../Models/Dto/ResponseBankAccountDto";
 
 const CreateBankAccountForm: FC<ICreateBankAccountFormProps> = (props) => {    
-    const [id, setId] = useState(-1);
+    // const [id, setId] = useState(-1);
 
-    useEffect(() => {
-        if(props.userId !== undefined){
-            setId(props.userId)
-        }   
-    },[props.userId])
+    // useEffect(() => {
+    //     if(props.userId !== undefined){
+    //         setId(props.userId)
+    //     }   
+    // },[props.userId])
 
     const validationSchema = Yup.object({
         bankAccountName: Yup.string()
@@ -29,7 +29,7 @@ const CreateBankAccountForm: FC<ICreateBankAccountFormProps> = (props) => {
     validationSchema,
     onSubmit: async values => {
         try {
-            let bankAccountResponse: ResponseBankAccountDto = await postBankAccount({userId: id, nameOfAccount: values.bankAccountName});
+            let bankAccountResponse: ResponseBankAccountDto = await postBankAccount({userAccountId: props.userId!, nameOfAccount: values.bankAccountName});
             if (bankAccountResponse.bankAccountNumber !== undefined) {       
                 props.setAlertMessage(`Bankkonto "${bankAccountResponse.bankAccountName}" skapades och tilldelades kontonummer ${bankAccountResponse.bankAccountNumber}.`);
             }         

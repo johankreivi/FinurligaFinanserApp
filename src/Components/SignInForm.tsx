@@ -31,7 +31,7 @@ const formik = useFormik({
                 props.handleAlert(true);
                 props.setAlertMessage('Inloggning lyckades! Välkommen ' + response.userName + '!');
                 if(props.setIsAuthorized === undefined) throw new Error('setIsAuthorized is undefined');
-                props.setIsAuthorized({ isAuthorized: true, userName: response.userName, message: response.message });
+                props.setIsAuthorized({ isAuthorized: true, userName: response.userName, message: response.message, id: response.id });
                 redirect('/Home');
             }
         } catch (error) {

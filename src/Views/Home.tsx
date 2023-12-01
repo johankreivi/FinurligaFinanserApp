@@ -38,7 +38,7 @@ const Home: FC<IRegisterFormProps> = (props) => {
                 <CreateBankAccountForm 
                     handleAlert={props.handleAlert} 
                     setAlertMessage={props.setAlertMessage} 
-                    userId={props.getIsAuthorized?.userId} 
+                    userId={props.getIsAuthorized?.id} 
                     userName='Bobo'
                     show={showCreateAccountModal}
                     handleClose={handleCloseCreateAccountModal} 

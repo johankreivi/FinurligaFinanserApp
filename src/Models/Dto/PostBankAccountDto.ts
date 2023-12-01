@@ -1,4 +1,4 @@
 export type PostBankAccountDto = {
-    userId: number;
+    userAccountId: number;
     nameOfAccount: string;    
 };

@@ -25,9 +25,9 @@ export const postLoginUser = async (userAccount: PostLoginUserDto) => {
     }    
 };
 
-export const postBankAccount = async (bankAccount: PostBankAccountDto) => {
+export const postBankAccount = async (bankAccount: PostBankAccountDto) => {    
     try {   
-        return await axios.post(`${LOCALHOST}/BankAccount/CreateBankAccount`, bankAccount)
+        return await axios.post(`${LOCALHOST}/BankAccount`, bankAccount)
                           .then(response => response.data);
     
     } catch (error) {     
