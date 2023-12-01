@@ -5,7 +5,7 @@ import { IRegisterFormProps } from '../Models/Interfaces/IRegisterFormProps';
 const SignInView: FC<IRegisterFormProps> = (props : IRegisterFormProps) => {
 
 return(
-        <SignInForm handleAlert={props.handleAlert} setAlertMessage={props.setAlertMessage} setIsAuthorized={props.setIsAuthorized} />
+        <SignInForm setCookie={props.setCookie} handleAlert={props.handleAlert} setAlertMessage={props.setAlertMessage}  />
     );
 }
 

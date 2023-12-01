@@ -5,6 +5,8 @@ import { Link } from "react-router-dom";
 import { IHeaderProps } from '../Models/Interfaces/IHeaderProps';
 
 const Header: FC<IHeaderProps> = (props) => {  
+    const handleLogout = () =>  props.removeCookie!();
+    
     return (
         <Navbar bg="dark" variant="dark" expand="lg" className='mx-0 px-0'>
             <Container fluid>
@@ -24,7 +26,7 @@ const Header: FC<IHeaderProps> = (props) => {
                     <h1>Finurliga Finanser</h1>
                     <Button className='m-2' onClick={props.handleShowModal}>Skapa bankkonto</Button>
                     <Link to="/">
-                        <Button className='m-2' variant='light'>
+                        <Button className='m-2' variant='light' onClick={handleLogout}>
                             Logga ut
                         </Button>
                     </Link>            

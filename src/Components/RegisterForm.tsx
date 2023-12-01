@@ -70,9 +70,9 @@ const RegisterForm: FC< IRegisterFormProps > = (props) => {
                 });
                 
                 if (loginResponse.isAuthorized) {
-                    props.setIsAuthorized(loginResponse);
                     props.setAlertMessage(userResponse.message);
                     props.handleAlert(true);
+                    props.setCookie("user" , {id: loginResponse.id, userName: loginResponse.userName, isAuthorized: loginResponse.isAuthorized});          
                     navigate('/Home');
                 } 
                 else {

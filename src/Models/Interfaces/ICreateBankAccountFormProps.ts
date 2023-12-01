@@ -1,6 +1,5 @@
 export interface ICreateBankAccountFormProps {
-    userName?: string;
-    userId?: number;
+    cookieUser?: any;
     handleAlert: (success: boolean) => void;
     setAlertMessage: (message: string) => void;
     show: boolean;

@@ -13,10 +13,11 @@ const Home: FC<IRegisterFormProps> = (props) => {
     const [showCreateAccountModal, setShowCreateAccountModal] = useState(false);
 
     useEffect(() => {
-        if(props.getIsAuthorized?.isAuthorized === false){
+        if(!props.cookieUser || !props.cookieUser.isAuthorized){
             redirect('/');
         }
-    }, [props.getIsAuthorized?.isAuthorized, redirect]);
+        
+    }, [props.cookieUser?.isAuthorized, redirect]);
 
     const handleShowCreateAccountModal = () => setShowCreateAccountModal(true);
     const handleCloseCreateAccountModal = () => setShowCreateAccountModal(false);
@@ -24,22 +25,17 @@ const Home: FC<IRegisterFormProps> = (props) => {
     return(
         <Container fluid style={{color: 'white'}}>
             <Header 
-                userName={'Bobo'} 
+                removeCookie={props.removeCookie}
+                setCookie={props.setCookie}
+                userName={props.cookieUser?.userName} 
                 balance={0} 
                 handleShowModal={handleShowCreateAccountModal} 
             />
-            
-            <Row>
-                <Col>
-                
-                </Col>
-            </Row>
             <Row>
                 <CreateBankAccountForm 
                     handleAlert={props.handleAlert} 
                     setAlertMessage={props.setAlertMessage} 
-                    userId={props.getIsAuthorized?.id} 
-                    userName='Bobo'
+                    cookieUser={props.cookieUser}
                     show={showCreateAccountModal}
                     handleClose={handleCloseCreateAccountModal} 
                 />

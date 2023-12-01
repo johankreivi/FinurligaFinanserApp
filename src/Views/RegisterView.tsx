@@ -5,7 +5,7 @@ import { IRegisterFormProps } from '../Models/Interfaces/IRegisterFormProps';
 const RegisterView: FC<IRegisterFormProps> = (props) => {  
 
 return(
-        <RegisterForm setIsAuthorized={props.setIsAuthorized} handleAlert={props.handleAlert} setAlertMessage={props.setAlertMessage} />
+        <RegisterForm setCookie={props.setCookie}  handleAlert={props.handleAlert} setAlertMessage={props.setAlertMessage} />
     );
 }
 
