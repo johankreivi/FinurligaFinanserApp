@@ -50,7 +50,7 @@ const handleClose = () => {
 
 return (
     <>        
-        <Modal show={props.show && !showBankAccountOrConfirmitionInModal} onHide={props.handleClose}>
+        <Modal data-testid="create-bankaccount" show={props.show && !showBankAccountOrConfirmitionInModal} onHide={props.handleClose}>
             <Modal.Header closeButton>
             <Modal.Title>Skapa bankkonto</Modal.Title>
             </Modal.Header>
@@ -68,8 +68,9 @@ return (
                                 onBlur={formik.handleBlur}
                                 value={formik.values.bankAccountName}
                                 isInvalid={formik.touched.bankAccountName && !!formik.errors.bankAccountName}
+                                data-testid="bankaccount-input"
                             />
-                            <Form.Control.Feedback type="invalid">
+                            <Form.Control.Feedback data-testid="create-bankaccount-invalid-input" type="invalid">
                                 {formik.errors.bankAccountName}
                             </Form.Control.Feedback>
                         </Form.Group>
@@ -79,30 +80,30 @@ return (
 
             </Modal.Body>
             <Modal.Footer>          
-                <Button variant="secondary" onClick={props.handleClose}>
+                <Button variant="secondary" onClick={props.handleClose} data-testid="bankaccount-creation-modal-abort">
                     Avbryt
                 </Button>
-                <Button variant="primary" onClick={handleSubmit}>
+                <Button variant="primary" onClick={handleSubmit} data-testid="bankaccount-creation-modal-confirm">
                     Bekräfta
                 </Button>
             </Modal.Footer>
         </Modal>
 
-        <Modal show={props.show && showBankAccountOrConfirmitionInModal} onHide={props.handleClose}>
+        <Modal data-testid="bankaccount-created-confirmation" show={props.show && showBankAccountOrConfirmitionInModal} onHide={props.handleClose}>
             <Modal.Header closeButton>
-            <Modal.Title>Bankkonto skapat!</Modal.Title>
+            <Modal.Title data-testid="bankaccount-created-title">Bankkonto skapat!</Modal.Title>
             </Modal.Header>
             <Modal.Body>
 
             <Row>
                 <Col>
-                    <p>{bankAccountMessage}</p>
+                    <p data-testid="bankaccount-created-text">{bankAccountMessage}</p>
                 </Col>
             </Row>   
 
             </Modal.Body>
             <Modal.Footer>          
-                <Button variant="secondary" onClick={handleClose}>
+                <Button variant="secondary" onClick={handleClose} data-testid="bankaccount-created-close-button">
                     Stäng
                 </Button>                
             </Modal.Footer>

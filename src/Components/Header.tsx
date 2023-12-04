@@ -17,16 +17,17 @@ const Header: FC<IHeaderProps> = (props) => {
                             height="80" 
                             className="d-inline-block align-top"
                             alt="FF logo"
+                            data-testid="header-logo"
                         />
                         
                     </Navbar.Brand>                    
                     <div style={{ border: '1px solid white', borderRadius: '10px' }}>               
-                        <h3 style={{padding: '10px'}}>{props.userName} {props.balance} kr</h3>
+                        <h3 style={{padding: '10px'}} data-testid="header-username-and-balance">{props.userName} {props.balance} kr</h3>
                     </div>
                     <h1>Finurliga Finanser</h1>
-                    <Button className='m-2' onClick={props.handleShowModal}>Skapa bankkonto</Button>
+                    <Button className='m-2' onClick={props.handleShowModal} data-testid="create-bankaccount-button">Skapa bankkonto</Button>
                     <Link to="/">
-                        <Button className='m-2' variant='light' onClick={handleLogout}>
+                        <Button className='m-2' variant='light' onClick={handleLogout} data-testid="header-logout-button">
                             Logga ut
                         </Button>
                     </Link>            

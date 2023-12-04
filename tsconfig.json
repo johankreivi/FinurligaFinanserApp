@@ -22,6 +22,10 @@
   },
   "include": [
     "src",
-    "cypress.d.ts"
-, "cypress/component/RegisterForm.cy.tsx", "cypress/component/SignInForm.cy.tsx"  ]
+    "cypress.d.ts", 
+    "cypress/component/RegisterForm.cy.tsx", 
+    "cypress/component/SignInForm.cy.tsx", 
+    "cypress/component/Header.cy.tsx",
+    "cypress/component/CreateBankAccountForm.cy.tsx",
+  ]
 }

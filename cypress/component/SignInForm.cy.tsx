@@ -5,24 +5,26 @@ describe("SignInForm", () => {
   it("should render", () => {
     cy.mount(
         <Router>
-            <SignInForm handleAlert={function (success: boolean): void {
+            <SignInForm setCookie={function (name: string, value: any): void {
+                throw new Error("Function not implemented.");
+                }}handleAlert={function (success: boolean): void {
                 throw new Error("Function not implemented.");
             } } setAlertMessage={function (message: string): void {
                 throw new Error("Function not implemented.");
-            } } setIsAuthorized={function (isAuthorized: import("../../src/Models/Dto/ResponseLoginUserDto").ResponseLoginUserDto): void {}
-            } />
+            } }  />
         </Router>
         );
     });
     it("should contain a form", () => {
         cy.mount(
             <Router>
-            <SignInForm handleAlert={function (success: boolean): void {
+            <SignInForm setCookie={function (name: string, value: any): void {
+                throw new Error("Function not implemented.");
+                }}handleAlert={function (success: boolean): void {
                 throw new Error("Function not implemented.");
             } } setAlertMessage={function (message: string): void {
                 throw new Error("Function not implemented.");
-            } } setIsAuthorized={function (isAuthorized: import("../../src/Models/Dto/ResponseLoginUserDto").ResponseLoginUserDto): void {}
-            } />
+            } }  />
             </Router>
             );
         cy.get("form").should("exist");
@@ -30,12 +32,13 @@ describe("SignInForm", () => {
     it("should contain a link to register", () => {
         cy.mount(
             <Router>
-            <SignInForm handleAlert={function (success: boolean): void {
+            <SignInForm setCookie={function (name: string, value: any): void {
+                throw new Error("Function not implemented.");
+                }}handleAlert={function (success: boolean): void {
                 throw new Error("Function not implemented.");
             } } setAlertMessage={function (message: string): void {
                 throw new Error("Function not implemented.");
-            } } setIsAuthorized={function (isAuthorized: import("../../src/Models/Dto/ResponseLoginUserDto").ResponseLoginUserDto): void {}
-            } />
+            } }  />
             </Router>
             );
         cy.get("a").should("exist");
@@ -43,12 +46,13 @@ describe("SignInForm", () => {
     it("should contain a button", () => {
         cy.mount(
             <Router>
-            <SignInForm handleAlert={function (success: boolean): void {
+            <SignInForm setCookie={function (name: string, value: any): void {
+                throw new Error("Function not implemented.");
+                }}handleAlert={function (success: boolean): void {
                 throw new Error("Function not implemented.");
             } } setAlertMessage={function (message: string): void {
                 throw new Error("Function not implemented.");
-            } } setIsAuthorized={function (isAuthorized: import("../../src/Models/Dto/ResponseLoginUserDto").ResponseLoginUserDto): void {}
-            } />
+            } }  />
             </Router>
             );
         cy.get("button").should("exist");
@@ -56,12 +60,13 @@ describe("SignInForm", () => {
     it("should contain a input", () => {
         cy.mount(
             <Router>
-            <SignInForm handleAlert={function (success: boolean): void {
+            <SignInForm setCookie={function (name: string, value: any): void {
+                throw new Error("Function not implemented.");
+                }}handleAlert={function (success: boolean): void {
                 throw new Error("Function not implemented.");
             } } setAlertMessage={function (message: string): void {
                 throw new Error("Function not implemented.");
-            } } setIsAuthorized={function (isAuthorized: import("../../src/Models/Dto/ResponseLoginUserDto").ResponseLoginUserDto): void {}
-            } />
+            } }  />
             </Router>
             );
         cy.get("input").should("exist");

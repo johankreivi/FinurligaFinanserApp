@@ -6,7 +6,9 @@ describe("RegisterForm", () => {
     it("should render", () => {
         cy.mount(
             <Router>
-                <RegisterForm handleAlert={function (success: boolean): void {
+                <RegisterForm  setCookie={function (name: string, value: any): void {
+                    throw new Error("Function not implemented.");
+                }} handleAlert={function (success: boolean): void {
                     throw new Error("Function not implemented.");
                 } } setAlertMessage={function (message: string): void {
                     throw new Error("Function not implemented.");
@@ -17,7 +19,9 @@ describe("RegisterForm", () => {
         it("should contain a form", () => {
             cy.mount(
                 <Router>
-                <RegisterForm handleAlert={function (success: boolean): void {
+                <RegisterForm setCookie={function (name: string, value: any): void {
+                    throw new Error("Function not implemented.");
+                }}  handleAlert={function (success: boolean): void {
                     throw new Error("Function not implemented.");
                 } } setAlertMessage={function (message: string): void {
                     throw new Error("Function not implemented.");
@@ -29,7 +33,9 @@ describe("RegisterForm", () => {
         it("should contain a link to register", () => {
             cy.mount(
                 <Router>
-                <RegisterForm handleAlert={function (success: boolean): void {
+                <RegisterForm setCookie={function (name: string, value: any): void {
+                    throw new Error("Function not implemented.");
+                }}  handleAlert={function (success: boolean): void {
                     throw new Error("Function not implemented.");
                 } } setAlertMessage={function (message: string): void {
                     throw new Error("Function not implemented.");
@@ -41,7 +47,9 @@ describe("RegisterForm", () => {
         it("should contain a button", () => {
             cy.mount(
                 <Router>
-                <RegisterForm handleAlert={function (success: boolean): void {
+                <RegisterForm setCookie={function (name: string, value: any): void {
+                    throw new Error("Function not implemented.");
+                }}  handleAlert={function (success: boolean): void {
                     throw new Error("Function not implemented.");
                 } } setAlertMessage={function (message: string): void {
                     throw new Error("Function not implemented.");
@@ -53,7 +61,9 @@ describe("RegisterForm", () => {
         it("should contain a input", () => {
             cy.mount(
                 <Router>
-                <RegisterForm handleAlert={function (success: boolean): void {
+                <RegisterForm setCookie={function (name: string, value: any): void {
+                    throw new Error("Function not implemented.");
+                }}  handleAlert={function (success: boolean): void {
                     throw new Error("Function not implemented.");
                 } } setAlertMessage={function (message: string): void {
                     throw new Error("Function not implemented.");
@@ -65,7 +75,9 @@ describe("RegisterForm", () => {
         it("Find submit and click", () => {
             cy.mount(
                 <Router>
-                <RegisterForm handleAlert={function (success: boolean): void {
+                <RegisterForm setCookie={function (name: string, value: any): void {
+                    throw new Error("Function not implemented.");
+                }}  handleAlert={function (success: boolean): void {
                     throw new Error("Function not implemented.");
                 } } setAlertMessage={function (message: string): void {
                     throw new Error("Function not implemented.");
