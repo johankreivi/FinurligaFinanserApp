@@ -6,6 +6,8 @@ import { IRegisterFormProps } from '../Models/Interfaces/IRegisterFormProps';
 import { useNavigate } from 'react-router-dom';
 import Header from '../Components/Header';
 import CreateBankAccountForm from '../Components/CreateBankAccountForm';
+import { BankAccount } from '../Models/Dto/BankAccount';
+import { getAllUserBankAccounts } from '../Services/APIService';
 
 const Home: FC<IRegisterFormProps> = (props) => {  
     const redirect = useNavigate();    
@@ -16,11 +18,23 @@ const Home: FC<IRegisterFormProps> = (props) => {
         if(!props.cookieUser || !props.cookieUser.isAuthorized){
             redirect('/');
         }
-        
+        const fetchData = async () => {
+            try {
+              const accounts = await getAllUserBankAccounts(props.cookieUser?.id);
+              setListOfBankAccounts(accounts);
+            } catch (error) {
+              console.error('Error fetching bank accounts:', error);
+            }
+          };
+      
+          fetchData();
     }, [props.cookieUser?.isAuthorized, redirect]);
+
 
     const handleShowCreateAccountModal = () => setShowCreateAccountModal(true);
     const handleCloseCreateAccountModal = () => setShowCreateAccountModal(false);
+
+    const [listOfBankAccounts, setListOfBankAccounts] = useState<BankAccount[]>([]);
 
     return(
         <Container fluid style={{color: 'white'}}>
@@ -31,6 +45,17 @@ const Home: FC<IRegisterFormProps> = (props) => {
                 balance={0} 
                 handleShowModal={handleShowCreateAccountModal} 
             />
+            <Row>
+                {
+                    listOfBankAccounts.map(item => 
+                        <div>
+                            <p>{item.nameOfAccount}</p>
+                            <p>{item.accountNumber}</p>
+                            <p>{item.balance} kr</p>
+                        </div>
+                    )
+                }
+            </Row>
             <Row>
                 <CreateBankAccountForm 
                     handleAlert={props.handleAlert} 

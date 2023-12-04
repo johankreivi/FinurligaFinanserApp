@@ -34,3 +34,13 @@ export const postBankAccount = async (bankAccount: PostBankAccountDto) => {
         console.log('Error when creating bankaccount: '+error)
     }    
 }
+
+export const getAllUserBankAccounts = async (userAccountId: number) => {    
+    try {   
+        return await axios.get(`${LOCALHOST}/BankAccount/User/${userAccountId}`)
+                          .then(response => response.data);
+    
+    } catch (error) {     
+        console.log('Error when creating bankaccount: '+error)
+    }    
+}
