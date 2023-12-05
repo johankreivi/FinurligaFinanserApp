@@ -156,6 +156,7 @@ return(
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
                             value={formik.values.password}
+                            autoComplete="false"
                             isInvalid={formik.touched.password && !!formik.errors.password}
                         />
                         <Form.Control.Feedback type='invalid'>
@@ -171,6 +172,7 @@ return(
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
                             value={formik.values.confirmPassword}
+                            autoComplete="false"
                             isInvalid={formik.touched.confirmPassword && !!formik.errors.confirmPassword}
                         />
                         <Form.Control.Feedback type='invalid'>

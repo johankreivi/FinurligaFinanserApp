@@ -7,7 +7,9 @@ import { useNavigate } from 'react-router-dom';
 import Header from '../Components/Header';
 import CreateBankAccountForm from '../Components/CreateBankAccountForm';
 import { BankAccount } from '../Models/Dto/BankAccount';
-import { getAllUserBankAccounts } from '../Services/APIService';
+import { getAllUserBankAccounts, getUserDetails } from '../Services/APIService';
+import BankAccountList from '../Components/BankAccountList';
+import { UserDetails } from '../Models/Dto/UserDetails';
 
 const Home: FC<IRegisterFormProps> = (props) => {  
     const redirect = useNavigate();    
@@ -18,19 +20,25 @@ const Home: FC<IRegisterFormProps> = (props) => {
         if(!props.cookieUser || !props.cookieUser.isAuthorized){
             redirect('/');
         }
-        const fetchData = async () => {
-            try {
-              const accounts = await getAllUserBankAccounts(props.cookieUser?.id);
-              setListOfBankAccounts(accounts);
-            } catch (error) {
-              console.error('Error fetching bank accounts:', error);
-            }
-          };
-      
-          fetchData();
+        refresh();
+        getFullName();
     }, [props.cookieUser?.isAuthorized, redirect]);
 
+    const refresh = async () => {        
+        try {
+            const accounts = await getAllUserBankAccounts(props.cookieUser?.id);
+            setListOfBankAccounts(accounts);
+        } catch (error) {
+            console.error('Error fetching bank accounts:', error);
+        }
+    }
 
+    const getFullName = async () => {
+        const user = await getUserDetails(props.cookieUser?.id);
+        setUserDetails(user);
+    }
+
+    const [userDetails, setUserDetails] = useState<UserDetails>({id: -1, firstName: "", lastName: ""});
     const handleShowCreateAccountModal = () => setShowCreateAccountModal(true);
     const handleCloseCreateAccountModal = () => setShowCreateAccountModal(false);
 
@@ -41,20 +49,13 @@ const Home: FC<IRegisterFormProps> = (props) => {
             <Header 
                 removeCookie={props.removeCookie}
                 setCookie={props.setCookie}
-                userName={props.cookieUser?.userName} 
+                userName={props.cookieUser?.userName}
+                fullName={userDetails} 
                 balance={0} 
                 handleShowModal={handleShowCreateAccountModal} 
             />
-            <Row>
-                {
-                    listOfBankAccounts.map(item => 
-                        <div>
-                            <p>{item.nameOfAccount}</p>
-                            <p>{item.accountNumber}</p>
-                            <p>{item.balance} kr</p>
-                        </div>
-                    )
-                }
+            <Row className='height-100'>
+            <BankAccountList listOfBankAccounts={listOfBankAccounts}/>            
             </Row>
             <Row>
                 <CreateBankAccountForm 
@@ -62,7 +63,8 @@ const Home: FC<IRegisterFormProps> = (props) => {
                     setAlertMessage={props.setAlertMessage} 
                     cookieUser={props.cookieUser}
                     show={showCreateAccountModal}
-                    handleClose={handleCloseCreateAccountModal} 
+                    handleClose={handleCloseCreateAccountModal}
+                    refresh={refresh} 
                 />
             </Row>
         </Container>

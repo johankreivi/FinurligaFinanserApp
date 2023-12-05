@@ -6,7 +6,7 @@ const balance: number = 1;
 
 const headerComponent = 
 <Router>
-    <Header balance={balance} userName={userName}
+    <Header fullName={{firstName: "Test", lastName: "User", id: 1}} balance={balance} userName={userName}
         handleShowModal={function(): void {
             throw new Error("Function not implemented.");
         }} 
@@ -27,7 +27,7 @@ const headerComponent =
   it("should contain name and balance", () =>{
     cy.mount(headerComponent);
     cy.get('[data-testid="header-username-and-balance"]').should('exist');
-    cy.get('[data-testid="header-username-and-balance"]').should('have.text', `${userName} ${balance} kr`);
+    cy.get('[data-testid="header-username-and-balance"]').should('have.text', `Test User ${balance} kr`);
 
 
   });

@@ -4,4 +4,5 @@ export interface ICreateBankAccountFormProps {
     setAlertMessage: (message: string) => void;
     show: boolean;
     handleClose: () => void;
+    refresh: () => void;
 }

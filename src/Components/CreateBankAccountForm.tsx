@@ -29,7 +29,8 @@ const CreateBankAccountForm: FC<ICreateBankAccountFormProps> = (props) => {
             if (bankAccountResponse.accountNumber !== undefined) { 
                 formik.resetForm();
                 setShowBankAccountOrConfirmitionInModal(true);
-                setBankAccountMessage(`Bankkonto "${bankAccountResponse.nameOfAccount}" skapades och tilldelades kontonummer ${bankAccountResponse.accountNumber}.`);     
+                setBankAccountMessage(`Bankkonto "${bankAccountResponse.nameOfAccount}" skapades och tilldelades kontonummer ${bankAccountResponse.accountNumber}.`);
+                props.refresh();     
             }         
         }
         catch(error) {
@@ -39,7 +40,7 @@ const CreateBankAccountForm: FC<ICreateBankAccountFormProps> = (props) => {
 });    
 
 const handleSubmit = () => {
-    formik.handleSubmit();    
+    formik.handleSubmit();       
 }
 
 const handleClose = () => {
