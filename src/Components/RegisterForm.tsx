@@ -70,14 +70,10 @@ const RegisterForm: FC< IRegisterFormProps > = (props) => {
                 });
                 
                 if (loginResponse.isAuthorized) {
-                    props.setAlertMessage(userResponse.message);
-                    props.handleAlert(true);
                     props.setCookie("user" , {id: loginResponse.id, userName: loginResponse.userName, isAuthorized: loginResponse.isAuthorized});          
                     navigate('/Home');
                 } 
                 else {
-                    props.setAlertMessage('Det gick inte att skapa kontot.');
-                    props.handleAlert(false);
                     navigate('/'); 
                 }
             }
@@ -85,8 +81,6 @@ const RegisterForm: FC< IRegisterFormProps > = (props) => {
                 navigate('/');
             }
         } catch (error) {
-            props.setAlertMessage('Något gick fel, försök igen!');
-            props.handleAlert(false);
             console.log(error);
         }
     }
@@ -98,7 +92,6 @@ return(
             <Row className='align-items-center'>
                 <Col>
                     <h1 className='text-light mb-5 text-center'>Registrera ny användare</h1>
-
                     <Form.Group className="mb-3">
                         <Form.Label className='text-light'>Användarnamn</Form.Label>
                         <Form.Control

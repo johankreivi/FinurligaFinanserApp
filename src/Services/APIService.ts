@@ -59,3 +59,7 @@ export const getUserDetails = async (userAccountId: number) => {
         console.log('Error when creating bankaccount: '+error)
     }    
 }
+
+export const getBankAccountTransactions = async (id: number) => {
+    throw new Error("Function not implemented.");
+}

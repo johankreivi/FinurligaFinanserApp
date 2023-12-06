@@ -1,6 +1,5 @@
 import { FC, useEffect, useState } from 'react';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
+import { Row, Button, } from 'react-bootstrap';
 import Container from 'react-bootstrap/Container';
 import { IRegisterFormProps } from '../Models/Interfaces/IRegisterFormProps';
 import { useNavigate } from 'react-router-dom';
@@ -38,7 +37,7 @@ const Home: FC<IRegisterFormProps> = (props) => {
         setUserDetails(user);
     }
 
-    const [userDetails, setUserDetails] = useState<UserDetails>({id: -1, firstName: "", lastName: ""});
+    const [userDetails, setUserDetails] = useState<UserDetails>({id: -1, firstName: "aa", lastName: "bb"});
     const handleShowCreateAccountModal = () => setShowCreateAccountModal(true);
     const handleCloseCreateAccountModal = () => setShowCreateAccountModal(false);
 
@@ -47,22 +46,19 @@ const Home: FC<IRegisterFormProps> = (props) => {
     const [listOfBankAccounts, setListOfBankAccounts] = useState<BankAccount[]>([]);
 
     return(
-        <Container className="mx-0 px-0" fluid style={{color: 'white'}}>
+        <Container data-testid="home-component" className="mx-0 px-0" fluid style={{color: 'white'}}>
             <Header 
                 removeCookie={props.removeCookie}
                 setCookie={props.setCookie}
-                userName={props.cookieUser?.userName}
-                fullName={userDetails} 
-                balance={0} 
-                handleShowModal={handleShowCreateAccountModal} 
+                userDetails={userDetails} 
             />
             <Row className='height-100'>
-            <BankAccountList refresh={refresh} listOfBankAccounts={listOfBankAccounts}/>            
+            <BankAccountList handleShowModal={handleShowCreateAccountModal} refresh={refresh} listOfBankAccounts={listOfBankAccounts}/>            
+            </Row>
+            <Row className='width-100'>
             </Row>
             <Row>
                 <CreateBankAccountForm 
-                    handleAlert={props.handleAlert} 
-                    setAlertMessage={props.setAlertMessage} 
                     cookieUser={props.cookieUser}
                     show={showCreateAccountModal}
                     handleClose={handleCloseCreateAccountModal}

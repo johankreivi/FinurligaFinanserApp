@@ -1,10 +1,5 @@
-import { ResponseLoginUserDto } from "../Dto/ResponseLoginUserDto";
+import { ICookieProps } from "./ICookieProps";
 
-
-export interface IRegisterFormProps {
-    handleAlert: (success: boolean) => void;
-    setAlertMessage: (message: string) => void;
-    cookieUser?: any;
-    setCookie: (name: "user", value: any) => void
-    removeCookie?: () => void;
+export interface IRegisterFormProps extends ICookieProps {
+    
 }
