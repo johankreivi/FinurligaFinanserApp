@@ -1,28 +1,38 @@
 import { FC } from 'react';
-import Container from 'react-bootstrap/Container'
-import { Button, Nav, Navbar } from 'react-bootstrap';
+import Container from 'react-bootstrap/Container';
+import { Button, Navbar } from 'react-bootstrap';
 import { Link } from "react-router-dom";
+import { IHeaderProps } from '../Models/Interfaces/IHeaderProps';
 
-const Header: FC = () => {  
-return(
-    <Navbar bg="dark" variant="dark">
-        <Container>
-            <Navbar.Brand href="#home">Navbar</Navbar.Brand>
-            <Nav className="me-auto">
-                <Link to="/register">
-                    <Button className='m-2' variant='light'>
-                        Registrera
-                    </Button>
-                </Link>
-
-                <Link to="/">
-                    <Button className='m-2' variant='light'>
-                        Logga in
-                    </Button>
-                </Link>               
-            </Nav>
-        </Container>
-    </Navbar>     
+const Header: FC<IHeaderProps> = (props) => {  
+    const handleLogout = () =>  props.removeCookie!();
+    
+    return (
+        <Navbar bg="dark" variant="dark" expand="lg" className='mx-0 px-0'>
+            <Container fluid>
+                    <Navbar.Brand>
+                        <img
+                            src="/fflogo.png" 
+                            width="auto" 
+                            height="80" 
+                            className="d-inline-block align-top rounded"
+                            alt="FF logo"
+                            data-testid="header-logo"
+                        />
+                        
+                    </Navbar.Brand>                    
+                    <div style={{ border: '1px solid white', borderRadius: '10px' }}>               
+                        <h3 style={{padding: '10px'}} data-testid="header-username-and-balance">{props.fullName.firstName} {props.fullName.lastName}</h3>
+                    </div>
+                    <h1>Finurliga Finanser</h1>
+                    <Button className='m-2' onClick={props.handleShowModal} data-testid="create-bankaccount-button">Skapa bankkonto</Button>
+                    <Link to="/">
+                        <Button className='m-2' variant='light' onClick={handleLogout} data-testid="header-logout-button">
+                            Logga ut
+                        </Button>
+                    </Link>            
+            </Container>
+        </Navbar>     
     );
 }
 

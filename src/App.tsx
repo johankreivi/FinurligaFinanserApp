@@ -6,15 +6,16 @@ import SignInView from './Views/SignInView';
 import RegisterView from './Views/RegisterView';
 import { useState } from 'react';
 import { Alert } from 'react-bootstrap';
-import { ResponseLoginUserDto } from './Models/Dto/ResponseLoginUserDto';
-import Header from './Components/Header';
+import { CookiesProvider, useCookies } from "react-cookie";
 
 function App() {
   
   const [showAlert, setShowAlert] = useState(false);
   const [alertSuccess, setAlertSuccess] = useState(false);
   const [alertMessage, setAlertMessage] = useState('');
-  const [isAuthorized, setIsAuthorized] = useState<ResponseLoginUserDto>({ isAuthorized: false, userName: '', message: '' });
+  
+  const [cookie, setCookie, removeCookie] = useCookies(['user']);
+  const handleRemove = () => removeCookie('user', { path: '/', });
 
   const handleAlert = (success: boolean) => {
     success ? setAlertSuccess(true) : setAlertSuccess(false);
@@ -25,7 +26,7 @@ function App() {
       setShowAlert(false);
     }, 3000);
   }
-
+  
   return (
     <>
     {showAlert ?
@@ -37,15 +38,17 @@ function App() {
           :
           null
       }
-    <div data-bs-theme='dark' className=' bg-dark '>
-      <Header />
-      <Routes>
-        <Route path='/Home' element={<Home handleAlert={handleAlert} setAlertMessage={setAlertMessage} getIsAuthorized={isAuthorized} />} />
-        <Route path='/' element={<SignInView handleAlert={handleAlert} setAlertMessage={setAlertMessage} setIsAuthorized={setIsAuthorized} />} />
-        <Route path='/register' element={<RegisterView handleAlert={handleAlert} setAlertMessage={setAlertMessage} />} />
-      </Routes>
-      
-    </div>
+      <CookiesProvider>
+        <div data-bs-theme='dark' style={{ margin: '0px',backgroundColor: '#001A2F', height: '100vh' }}>
+        
+          <Routes>
+            <Route path='/Home' element={<Home removeCookie={handleRemove} cookieUser={cookie.user} setCookie={setCookie}  handleAlert={handleAlert} setAlertMessage={setAlertMessage}  />} />
+            <Route path='/register' element={<RegisterView setCookie={setCookie}  handleAlert={handleAlert} setAlertMessage={setAlertMessage} />} />
+            <Route path='/' element={<SignInView setCookie={setCookie} handleAlert={handleAlert} setAlertMessage={setAlertMessage}  />} />
+          </Routes>
+        
+        </div>
+      </CookiesProvider>
     </>
   );
 }

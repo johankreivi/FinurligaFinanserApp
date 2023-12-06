@@ -1,8 +1,10 @@
 import { ResponseLoginUserDto } from "../Dto/ResponseLoginUserDto";
 
-export interface IFormProps {
+
+export interface IRegisterFormProps {
     handleAlert: (success: boolean) => void;
     setAlertMessage: (message: string) => void;
-    setIsAuthorized?: (ResponseLoginUserDto: ResponseLoginUserDto) => void;
-    getIsAuthorized?: ResponseLoginUserDto;
+    cookieUser?: any;
+    setCookie: (name: "user", value: any) => void
+    removeCookie?: () => void;
 }

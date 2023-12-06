@@ -1,11 +1,11 @@
 import { FC } from 'react';
 import SignInForm from '../Components/SignInForm';
-import { IFormProps } from '../Models/Interfaces/IFormProps';
+import { IRegisterFormProps } from '../Models/Interfaces/IRegisterFormProps';
 
-const SignInView: FC<IFormProps> = (props : IFormProps) => {
+const SignInView: FC<IRegisterFormProps> = (props : IRegisterFormProps) => {
 
 return(
-        <SignInForm handleAlert={props.handleAlert} setAlertMessage={props.setAlertMessage} setIsAuthorized={props.setIsAuthorized} />
+        <SignInForm setCookie={props.setCookie} handleAlert={props.handleAlert} setAlertMessage={props.setAlertMessage}  />
     );
 }
 

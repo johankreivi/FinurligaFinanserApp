@@ -1,11 +1,11 @@
 import { FC } from 'react';
 import RegisterForm from '../Components/RegisterForm';
-import { IFormProps } from '../Models/Interfaces/IFormProps';
+import { IRegisterFormProps } from '../Models/Interfaces/IRegisterFormProps';
 
-const RegisterView: FC<IFormProps> = (props) => {  
+const RegisterView: FC<IRegisterFormProps> = (props) => {  
 
 return(
-        <RegisterForm handleAlert={props.handleAlert} setAlertMessage={props.setAlertMessage} />
+        <RegisterForm setCookie={props.setCookie}  handleAlert={props.handleAlert} setAlertMessage={props.setAlertMessage} />
     );
 }
 
