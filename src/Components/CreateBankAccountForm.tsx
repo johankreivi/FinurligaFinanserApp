@@ -44,6 +44,7 @@ const handleSubmit = () => {
 }
 
 const handleClose = () => {
+    formik.resetForm();
     setBankAccountMessage("");
     setShowBankAccountOrConfirmitionInModal(false);
     props.handleClose();
@@ -81,7 +82,7 @@ return (
 
             </Modal.Body>
             <Modal.Footer>          
-                <Button variant="secondary" onClick={props.handleClose} data-testid="bankaccount-creation-modal-abort">
+                <Button variant="secondary" onClick={handleClose} data-testid="bankaccount-creation-modal-abort">
                     Avbryt
                 </Button>
                 <Button variant="primary" onClick={handleSubmit} data-testid="bankaccount-creation-modal-confirm">

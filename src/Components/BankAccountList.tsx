@@ -10,7 +10,7 @@ const BankAccountList: FC<IBankAccountListProps> = (props) => {
             <Col className="col-xs-0 col-sm-0 col-md-1 col-lg-2 col-xl-2"></Col>
             <Col className="col-xs-12 col-sm-12 col-md-10 col-lg-8 col-xl-8">
             <div className="tableBorder" style={{border: "1px #212529", backgroundColor: "#3DB2AF", padding: "10px", margin: "3px", borderRadius: "10px"}}>      
-            <Table striped bordered hover variant="dark" data-testid="bankaccounts-table">
+            <Table className="mb-0" striped bordered hover variant="dark" data-testid="bankaccounts-table">
                 <thead>
                     <tr>          
                     <th className="col-2">Kontonamn</th>
@@ -31,10 +31,10 @@ const BankAccountList: FC<IBankAccountListProps> = (props) => {
                         )
                     }
                     <tr>
-                        <td></td>
-                        <td></td>
-                        <td>{props.listOfBankAccounts.reduce((total, account) => total + account.balance, 0).toFixed(2)} kr</td>
-                        <td></td>
+                        <td style={{ fontWeight: "bold", borderTop: "2px solid white" }}>Totalt saldo</td>
+                        <td style={{ fontWeight: "bold", borderTop: "2px solid white" }}></td>
+                        <td style={{ fontWeight: "Bold", borderTop: "2px solid white" }}>{props.listOfBankAccounts.reduce((total, account) => total + account.balance, 0).toFixed(2)} kr</td>
+                        <td className="text-center" style={{ fontWeight: "Bold", borderTop: "2px solid white" }}><Button variant="info" onClick={props.refresh}>Uppdatera</Button></td>
                     </tr>
                 </tbody>
             </Table>

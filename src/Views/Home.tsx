@@ -42,10 +42,12 @@ const Home: FC<IRegisterFormProps> = (props) => {
     const handleShowCreateAccountModal = () => setShowCreateAccountModal(true);
     const handleCloseCreateAccountModal = () => setShowCreateAccountModal(false);
 
+    
+
     const [listOfBankAccounts, setListOfBankAccounts] = useState<BankAccount[]>([]);
 
     return(
-        <Container fluid style={{color: 'white'}}>
+        <Container className="mx-0 px-0" fluid style={{color: 'white'}}>
             <Header 
                 removeCookie={props.removeCookie}
                 setCookie={props.setCookie}
@@ -55,7 +57,7 @@ const Home: FC<IRegisterFormProps> = (props) => {
                 handleShowModal={handleShowCreateAccountModal} 
             />
             <Row className='height-100'>
-            <BankAccountList listOfBankAccounts={listOfBankAccounts}/>            
+            <BankAccountList refresh={refresh} listOfBankAccounts={listOfBankAccounts}/>            
             </Row>
             <Row>
                 <CreateBankAccountForm 

@@ -39,7 +39,7 @@ function App() {
           null
       }
       <CookiesProvider>
-        <div data-bs-theme='dark' style={{ backgroundColor: '#001A2F', height: '100vh' }}>
+        <div data-bs-theme='dark' style={{ margin: '0px',backgroundColor: '#001A2F', height: '100vh' }}>
         
           <Routes>
             <Route path='/Home' element={<Home removeCookie={handleRemove} cookieUser={cookie.user} setCookie={setCookie}  handleAlert={handleAlert} setAlertMessage={setAlertMessage}  />} />
