@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from 'react';
-import { Row, Button, } from 'react-bootstrap';
+import { Row, Button, Col, } from 'react-bootstrap';
 import Container from 'react-bootstrap/Container';
 import { IRegisterFormProps } from '../Models/Interfaces/IRegisterFormProps';
 import { useNavigate } from 'react-router-dom';
@@ -9,11 +9,15 @@ import { BankAccount } from '../Models/Dto/BankAccount';
 import { getAllUserBankAccounts, getUserDetails } from '../Services/APIService';
 import BankAccountList from '../Components/BankAccountList';
 import { UserDetails } from '../Models/Dto/UserDetails';
+import ModalTransaction from '../Components/ModalTransaction';
+import { ArrowClockwise, PlusCircle } from 'react-bootstrap-icons';
+
 
 const Home: FC<IRegisterFormProps> = (props) => {  
     const redirect = useNavigate();    
 
-    const [showCreateAccountModal, setShowCreateAccountModal] = useState(false);
+    const [showCreateAccountModal, setShowCreateAccountModal] = useState<boolean>(false);
+    const [showNewTransaction, setShowNewTransaction] = useState<boolean>(false);
 
     useEffect(() => {
         if(!props.cookieUser || !props.cookieUser.isAuthorized){
@@ -45,6 +49,18 @@ const Home: FC<IRegisterFormProps> = (props) => {
 
     const [listOfBankAccounts, setListOfBankAccounts] = useState<BankAccount[]>([]);
 
+
+    const handleShowNewTransaction = () => {
+        setShowNewTransaction(true);
+    }
+    const handleCloseNewTransaction = () => {
+        setShowNewTransaction(false);
+    }
+
+    const handleSubmitNewTransaction = () => {
+        setShowNewTransaction(false);
+    }
+
     return(
         <Container data-testid="home-component" className="mx-0 px-0" fluid style={{color: 'white'}}>
             <Header 
@@ -65,6 +81,21 @@ const Home: FC<IRegisterFormProps> = (props) => {
                     refresh={refresh} 
                 />
             </Row>
+            <ModalTransaction refresh={refresh} listOfBankAccounts={listOfBankAccounts} show={showNewTransaction} handleClose={handleCloseNewTransaction} handleSubmit={handleSubmitNewTransaction}/>
+            <Container>
+                <Row className="justify-content-center mt-4">
+                    <Col xs="auto">
+                        <Button className="btn-sm" variant="success" onClick={handleShowCreateAccountModal} data-testid="create-bankaccount-button" ><PlusCircle className='m-1' size={18}/> Lägg till bankkonto</Button>
+                    </Col>
+                    <Col xs="auto">
+                        <Button className="btn-sm" variant="success" onClick={handleShowNewTransaction}><PlusCircle className='m-1' size={18}/> Ny transaktion</Button>
+                    </Col>
+                    <Col xs="auto">
+                        <Button className="btn-sm" variant="info" onClick={refresh}>Uppdatera<ArrowClockwise className='m-1' size={18}/></Button>
+                    </Col>
+                    
+                </Row>
+            </Container>
         </Container>
     );
 }

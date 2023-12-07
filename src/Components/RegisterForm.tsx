@@ -176,12 +176,12 @@ return(
 
                     <div className="text-center d-flex justify-content-between">
                         <Link to="/">
-                            <Button variant="light" className='ms-5'>
+                            <Button variant="light" className='ms-5 btn-sm'>
                                 Avbryt
                             </Button>
                         </Link> 
 
-                        <Button className='me-5' variant="light" type="submit">
+                        <Button className='me-5 btn-sm' variant="light" type="submit">
                             Registera
                         </Button>
                     </div>  
