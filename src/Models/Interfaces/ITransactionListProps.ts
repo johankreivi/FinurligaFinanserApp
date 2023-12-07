@@ -2,5 +2,6 @@ import { TransactionDetails } from "../Dto/TransactionDetails";
 
 export interface ITransactionListProps {
     transactions: TransactionDetails[];
-    handleRedirectBack: () => void;
+    nameOfBankAccount: string;
+    bankAccountNumber: number;
 }

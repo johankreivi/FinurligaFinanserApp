@@ -3,7 +3,7 @@ export type TransactionDetails = {
     sendingAccountNumber: number; 
     amount: number;
     timeStamp: Date;
-    transactionType: number;
+    type: number;
     message: string;
     accountBalance: number;
 }

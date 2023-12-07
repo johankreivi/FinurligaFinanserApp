@@ -1,34 +1,43 @@
 import { FC, useEffect, useState } from 'react';
 import Container from 'react-bootstrap/Container';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import Header from '../Components/Header';
 import { UserDetails } from '../Models/Dto/UserDetails';
 import { ITransactionViewProps } from '../Models/Interfaces/ITransactionViewProps';
 import TransactionList from '../Components/TransactionList';
 import { TransactionDetails } from '../Models/Dto/TransactionDetails';
-import { getUserDetails } from '../Services/APIService';
+import { getBankAccountTransactions, getUserDetails } from '../Services/APIService';
+import { Button, Col, Form, Modal, Row } from 'react-bootstrap';
+import ModalEditBankAccountName from '../Components/ModalEditBankAccountName';
+import ModalDeleteBankAccount from '../Components/ModalDeleteBankAccount';
+import { ArrowLeft, Pencil, Trash } from 'react-bootstrap-icons';
 
 const TransactionView: FC<ITransactionViewProps> = (props) => {  
-    const dummyData: TransactionDetails[] = [
-        {
-            accountBalance: 1, amount: 1, message: "transaction-1", receivingAccountNumber: 1111111111, sendingAccountNumber: 2222222222, timeStamp: new Date(), transactionType: 0
-        },
-        {
-            accountBalance: 2, amount: 2, message: "transaction-2", receivingAccountNumber: 3333333333, sendingAccountNumber: 4444444444, timeStamp: new Date(), transactionType: 1
-        },
-        {
-            accountBalance: 3, amount: 3, message: "transaction-3", receivingAccountNumber: 5555555555, sendingAccountNumber: 6666666666, timeStamp: new Date(), transactionType: 2
-        }
-    ]
 
     const redirect = useNavigate();    
     const handleRedirectBack = () => redirect('/home');
 
+    const location = useLocation();  // This lets us access properties passed in the redirect function via a state.
     
+    const { state } = location;                                         // This is how we break out the state from location.
+    const bankAccountId: number = state && state.id;                    // Breaking out the property "id" from the state.
+    const nameOfBankAccount: string = state && state.nameOfAccount;     // Breaking out the property "nameOfAccount" from the state.
+    const bankAccountNumber: number = state && state.bankAccountNumber; // Breaking out the property "bankAccountNumber" from the state.
+
+    const [userDetails, setUserDetails] = useState<UserDetails>({id: -1, firstName: "", lastName: ""});
+    const [transactions, setTransactions] = useState<TransactionDetails[]>([]);
+
+    const [showEditName, setShowEditName] = useState<boolean>(false);
+    const [showDeleteAccount, setshowDeleteAccount] = useState<boolean>(false);
+
     useEffect(() => {
         if(!props.cookieUser || !props.cookieUser.isAuthorized){
-            alert('cookiproblem');
             redirect('/');
+        }
+
+        const getAllTransactions = async () => {
+            const transactionsResult = await getBankAccountTransactions(bankAccountId);
+            setTransactions(transactionsResult);
         }
 
         const getFullName = async () => {
@@ -36,13 +45,37 @@ const TransactionView: FC<ITransactionViewProps> = (props) => {
             setUserDetails(user);
         }
 
+        getAllTransactions();
         getFullName();
+        console.log(transactions)
     }, [props.cookieUser, props.cookieUser.isAuthorized, redirect]);
 
-    
 
-    const [userDetails, setUserDetails] = useState<UserDetails>({id: -1, firstName: "", lastName: ""});
+    const handleShowDeleteAccount = async () => {
+        setshowDeleteAccount(true);
+    }
 
+    const handleCloseDeleteAccount = () =>{
+        setshowDeleteAccount(false);
+    }
+
+    const handleSubmitDeleteAccount = () =>{
+        setshowDeleteAccount(false);
+        alert(`Ej implementerad ännu. Försökte ta bort "${nameOfBankAccount}" med id:${bankAccountId}.`);
+    }
+
+    const handleShowEditName = async () => {
+        setShowEditName(true)
+    }
+
+    const handleCloseEditName = () =>{
+        setShowEditName(false);
+    }
+
+    const handleSubmitEditName = (newName?: string) => {
+        setShowEditName(false);
+        alert(`Ej implementerad ännu. Försökte byta namn på "${nameOfBankAccount}" med id:${bankAccountId}. Nytt namn: "${newName}"`);
+    }
 
     return(
         <Container className="mx-0 px-0" fluid style={{color: 'white'}}>
@@ -51,7 +84,24 @@ const TransactionView: FC<ITransactionViewProps> = (props) => {
                 setCookie={props.setCookie}
                 userDetails={userDetails} 
             />
-            <TransactionList handleRedirectBack={handleRedirectBack} transactions={dummyData} />
+            <h2 className="text-center mt-3">Transaktionshistorik - {nameOfBankAccount}</h2>
+            <TransactionList bankAccountNumber={bankAccountNumber} nameOfBankAccount={nameOfBankAccount} transactions={transactions} />
+            <ModalEditBankAccountName handleClose={handleCloseEditName} handleSubmit={handleSubmitEditName} show={showEditName}/>
+            <ModalDeleteBankAccount handleClose={handleCloseDeleteAccount} handleSubmit={handleSubmitDeleteAccount} show={showDeleteAccount}/>
+            <Container>
+                <Row className="justify-content-center mt-4">
+                    <Col xs="auto">
+                    
+                        <Button className="btn-sm" variant="primary" onClick={handleRedirectBack}><ArrowLeft className='m-1' size={18}/>Tillbaka</Button>
+                    </Col>
+                    <Col xs="auto">
+                        <Button className="btn-sm" variant="info" onClick={handleShowEditName}>Byt namn<Pencil className='m-1' size={18}/></Button>
+                    </Col>
+                    <Col xs="auto">
+                        <Button className="btn-sm" variant="danger" onClick={handleShowDeleteAccount}>Avsluta konto<Trash className='m-1' size={18}/></Button>
+                    </Col>                    
+                </Row>
+            </Container>
         </Container>
     );
 }
