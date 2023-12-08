@@ -7,7 +7,7 @@ import { ITransactionViewProps } from '../Models/Interfaces/ITransactionViewProp
 import TransactionList from '../Components/TransactionList';
 import { TransactionDetails } from '../Models/Dto/TransactionDetails';
 import { getBankAccountTransactions, getUserDetails } from '../Services/APIService';
-import { Button, Col, Form, Modal, Row } from 'react-bootstrap';
+import { Button, Col, Row } from 'react-bootstrap';
 import ModalEditBankAccountName from '../Components/ModalEditBankAccountName';
 import ModalDeleteBankAccount from '../Components/ModalDeleteBankAccount';
 import { ArrowLeft, Pencil, Trash } from 'react-bootstrap-icons';
@@ -49,7 +49,7 @@ const TransactionView: FC<ITransactionViewProps> = (props) => {
         getFullName();
         console.log(transactions)
     }, [props.cookieUser, props.cookieUser.isAuthorized, redirect]);
-
+   
 
     const handleShowDeleteAccount = async () => {
         setshowDeleteAccount(true);

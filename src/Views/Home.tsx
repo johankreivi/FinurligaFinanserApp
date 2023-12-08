@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from 'react';
-import { Row, Button, Col, } from 'react-bootstrap';
+import { Row, Button, Col, Alert, } from 'react-bootstrap';
 import Container from 'react-bootstrap/Container';
 import { IRegisterFormProps } from '../Models/Interfaces/IRegisterFormProps';
 import { useNavigate } from 'react-router-dom';
@@ -45,7 +45,14 @@ const Home: FC<IRegisterFormProps> = (props) => {
     const handleShowCreateAccountModal = () => setShowCreateAccountModal(true);
     const handleCloseCreateAccountModal = () => setShowCreateAccountModal(false);
 
-    
+    const [showAlert, setShowAlert] = useState(false);
+
+    const handleShowAlert = () => {
+        setShowAlert(true);
+        setTimeout(() => {
+            setShowAlert(false);
+        }, 3000);
+    };
 
     const [listOfBankAccounts, setListOfBankAccounts] = useState<BankAccount[]>([]);
 
@@ -81,7 +88,14 @@ const Home: FC<IRegisterFormProps> = (props) => {
                     refresh={refresh} 
                 />
             </Row>
-            <ModalTransaction refresh={refresh} listOfBankAccounts={listOfBankAccounts} show={showNewTransaction} handleClose={handleCloseNewTransaction} handleSubmit={handleSubmitNewTransaction}/>
+            <div>
+            {showAlert && (
+                <Alert variant="success">
+                    Transaktionen har genomförts!
+                </Alert>
+            )}
+            <ModalTransaction refresh={refresh} listOfBankAccounts={listOfBankAccounts} show={showNewTransaction} handleClose={handleCloseNewTransaction} handleSubmit={handleSubmitNewTransaction} onTransactionComplete={handleShowAlert}/>
+            </div>
             <Container>
                 <Row className="justify-content-center mt-4">
                     <Col xs="auto">

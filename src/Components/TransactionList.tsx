@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { ITransactionListProps } from "../Models/Interfaces/ITransactionListProps";
-import { Button, Col,Row, Table } from "react-bootstrap";
+import { Col, Row, Table } from "react-bootstrap";
 import { transactionType } from "../Models/Enums/EnumTransactionsTypes";
 
 const TransactionList: FC<ITransactionListProps> = (props) => {
@@ -13,7 +13,7 @@ const TransactionList: FC<ITransactionListProps> = (props) => {
             </Col>
             <Col className="col-xs-12 col-sm-12 col-md-10 col-lg-8 col-xl-8">
                 <div className="tableBorder" style={{border: "1px #212529", backgroundColor: "#3DB2AF", padding: "10px", margin: "3px", borderRadius: "10px"}}>      
-                {props.transactions.length > 0 ?
+                {props.transactions && props.transactions.length > 0 ?
                     <Table className="mb-0" striped bordered hover variant="dark" data-testid="bankaccounts-table">
                         <thead>
                             <tr>
@@ -30,10 +30,10 @@ const TransactionList: FC<ITransactionListProps> = (props) => {
                             {props.transactions.map((item, index) => <tr data-testid={`account_row_${index}`} key={`account_row_${index}`}>
                                 <td data-testid={`account_row_transactionType_${index}`}>{transactionType[item.type]}</td>
                                 <td data-testid={`account_row_timeStamp_${index}`}>{item.timeStamp.toString()}</td>
-                                <td data-testid={`account_row_sendingAccountNumber_${index}`}>{item.sendingAccountNumber == 0 ? '' : item.sendingAccountNumber}</td>
+                                <td data-testid={`account_row_sendingAccountNumber_${index}`}>{item.sendingAccountNumber === 0 ? '' : item.sendingAccountNumber}</td>
                                 <td data-testid={`account_row_receivingAccountNumber_${index}`}>{item.receivingAccountNumber}</td>
                                 <td data-testid={`account_row_message_${index}`}>{item.message}</td>
-                                <td data-testid={`account_row_amount_${index}`}>{props.bankAccountNumber == item.sendingAccountNumber ? '-': ''}{item.amount.toFixed(2)} kr</td>
+                                <td data-testid={`account_row_amount_${index}`}>{props.bankAccountNumber === item.sendingAccountNumber ? '-': ''}{item.amount.toFixed(2)} kr</td>
                                 <td data-testid={`account_row_accountBalance_${index}`}>{item.accountBalance.toFixed(2)} kr</td>
                             </tr>
                             )}

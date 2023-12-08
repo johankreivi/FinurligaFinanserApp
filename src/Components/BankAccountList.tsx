@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { IBankAccountListProps } from "../Models/Interfaces/IBankAccountListProps";
 import { Row, Table, Col, Button } from "react-bootstrap";
-import { redirect, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { ArrowRight } from 'react-bootstrap-icons';
 
 
