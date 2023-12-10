@@ -71,6 +71,16 @@ export const getBankAccountTransactions = async (id: number) => {
     } 
 }
 
+export const getRecipientBankAccountDetails = async (accountNumber: number) => {
+    try {   
+        return await axios.get(`${LOCALHOST}/UserAccount/GetUserAccountByBankAccountNumber/${accountNumber}`)
+                          .then(response => response.data);
+    
+    } catch (error) {     
+        console.log('Error when getting user account names: '+error)
+    } 
+}
+
 export const postTransaction = async (postTransactionDto: PostTransactionDto) => {
     try {   
         return await axios.post(`${LOCALHOST}/Transaction`, postTransactionDto)

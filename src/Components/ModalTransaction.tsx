@@ -4,7 +4,7 @@ import { useFormik } from "formik";
 import * as Yup from 'yup';
 import { IModalTransactionProps } from "../Models/Interfaces/IModalTransaction";
 import {PostTransactionDto} from '../Models/Dto/PostTransactionDto'
-import {postTransaction as postNewTransaction} from '../Services/APIService';
+import {getRecipientBankAccountDetails, postTransaction as postNewTransaction} from '../Services/APIService';
 import { BankAccount } from "../Models/Dto/BankAccount";
 
 const ModalTransaction: FC<IModalTransactionProps> = (props) => {
@@ -18,6 +18,9 @@ const ModalTransaction: FC<IModalTransactionProps> = (props) => {
   const [checked, setChecked] = useState(false);
   const [showInternalInput, setShowInternalInput]=useState(false);
   const [showExternalInput, setShowExternalInput]=useState(true);
+  const [recipientName, setRecipientName] = useState<string>("");
+  const [showRecipientName, setShowRecipientName] = useState(false);
+  
   
   //TEMPORÄRA FÖR LOGGNING
   const [amount, setAmount] = useState<number>(666);
@@ -49,8 +52,7 @@ const ModalTransaction: FC<IModalTransactionProps> = (props) => {
     if (account) {
       setSelectedAccountNumberReceiver(account.accountNumber);
       setSelectedAccountReceiver(account); 
-    }
-    else {alert("Bankkontot existerar inte i databasen!")}
+    }    
   }
 
   const handleToggle = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -58,6 +60,9 @@ const ModalTransaction: FC<IModalTransactionProps> = (props) => {
     setChecked(isChecked);
     setShowInternalInput(isChecked);
     setShowExternalInput(!isChecked);
+    setShowRecipientName(false);
+    setSelectedAccountNumberReceiver("Välj ett konto i listan");
+    setSelectedAccountReceiver(null);
   };
 
   const validationSchema = Yup.object({
@@ -103,7 +108,29 @@ const ModalTransaction: FC<IModalTransactionProps> = (props) => {
         alert('fel');
       }
     },
-  });  
+  });
+
+  const handleGetRecipient = async () => {
+    setRecipientName("");
+    setShowRecipientName(false);
+    try {      
+      const accountNumber = typeof selectedAccountNumberReceiver === 'string' 
+        ? parseInt(selectedAccountNumberReceiver, 10)
+        : selectedAccountNumberReceiver;      
+      
+      if (!isNaN(accountNumber)) {
+        let recipientDetails = await getRecipientBankAccountDetails(accountNumber);
+        const fullNameOfRecipient = recipientDetails.firstName + " " + recipientDetails.lastName; 
+        setRecipientName(fullNameOfRecipient);        
+      } else {
+        setRecipientName("Angivet bankkonto saknar ägare");
+      }
+      setShowRecipientName(true);
+    } catch (error) {
+      console.error('Fel vid hämtning av mottagarens namn: ' + error);
+    }
+  }
+  
 
   const handleSubmit= () =>{ 
     setAmount(formik.values.amount);
@@ -196,9 +223,25 @@ const ModalTransaction: FC<IModalTransactionProps> = (props) => {
                   name="receivingAccountNumber"                    
                 />
               </Form.Group>
-            </Col>
+            </Col>            
             )}
-          </Row>            
+            {showInternalInput && (
+              <Col>
+              <Button onClick={handleGetRecipient}>Visa mottagare</Button>
+              </Col>
+            )}
+          </Row>
+          
+          {showRecipientName && (
+            <Row>
+              <Col sm={2}>
+                <Form.Label>Kontoägare:</Form.Label>
+              </Col>
+              <Col sm={{span: 5, offset: 1}} className="mb-2">
+                <h6 style={{color: "#0d6efd"}}>{recipientName}</h6>
+              </Col>
+            </Row>
+          )}
       
           <Row className="mb-3">
             <Col sm={2} className="mt-1">
