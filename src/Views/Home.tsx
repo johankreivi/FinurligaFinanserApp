@@ -69,12 +69,18 @@ const Home: FC<IRegisterFormProps> = (props) => {
     }
 
     return(
+        
         <Container data-testid="home-component" className="mx-0 px-0" fluid style={{color: 'white'}}>
             <Header 
                 removeCookie={props.removeCookie}
                 setCookie={props.setCookie}
                 userDetails={userDetails} 
             />
+            {showAlert && (
+                <Alert className='position-fixed w-100 text-center text-light bg-success fw-bolder '>
+                    Transaktionen har genomförts!
+                </Alert>
+            )}
             <Row className='height-100'>
             <BankAccountList handleShowModal={handleShowCreateAccountModal} refresh={refresh} listOfBankAccounts={listOfBankAccounts}/>            
             </Row>
@@ -89,11 +95,7 @@ const Home: FC<IRegisterFormProps> = (props) => {
                 />
             </Row>
             <div>
-            {showAlert && (
-                <Alert variant="success">
-                    Transaktionen har genomförts!
-                </Alert>
-            )}
+            
             <ModalTransaction refresh={refresh} listOfBankAccounts={listOfBankAccounts} show={showNewTransaction} handleClose={handleCloseNewTransaction} handleSubmit={handleSubmitNewTransaction} onTransactionComplete={handleShowAlert}/>
             </div>
             <Container>
