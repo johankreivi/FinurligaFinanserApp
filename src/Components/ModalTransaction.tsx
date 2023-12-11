@@ -1,18 +1,18 @@
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { Modal, Button, Col, Form, Row, Dropdown } from "react-bootstrap";
 import { useFormik } from "formik";
 import * as Yup from 'yup';
 import { IModalTransactionProps } from "../Models/Interfaces/IModalTransaction";
 import {PostTransactionDto} from '../Models/Dto/PostTransactionDto'
-import {getRecipientBankAccountDetails, postTransaction as postNewTransaction} from '../Services/APIService';
+import {getRecipientBankAccountDetails, postTransaction as postNewTransaction, postTransaction} from '../Services/APIService';
 import { BankAccount } from "../Models/Dto/BankAccount";
 
 const ModalTransaction: FC<IModalTransactionProps> = (props) => {
   const [currentBalance, setCurrentBalance] = useState<number>(0);    
   const [selectedAccountNumber, setSelectedAccountNumber] = useState<number>(0)
-  const [selectedAccountNumberReceiver, setSelectedAccountNumberReceiver] = useState<number | string>("Välj ett konto i listan");
-  const [selectedAccount, setSelectedAccount] = useState<BankAccount | null>(null);
-  const [selectedAccountReceiver, setSelectedAccountReceiver] = useState<BankAccount | null>(null);
+  const [selectedAccountNumberReceiver, setSelectedAccountNumberReceiver] = useState<number>(0);
+  // const [selectedAccount, setSelectedAccount] = useState<BankAccount | null>(null);
+  // const [selectedAccountReceiver, setSelectedAccountReceiver] = useState<BankAccount | null>(null);
   
   // States för vilken input för ReceiverAccount som ska visas
   const [checked, setChecked] = useState(false);
@@ -20,22 +20,16 @@ const ModalTransaction: FC<IModalTransactionProps> = (props) => {
   const [showExternalInput, setShowExternalInput]=useState(true);
   const [recipientName, setRecipientName] = useState<string>("");
   const [showRecipientName, setShowRecipientName] = useState(false);
-  
-  
-  //TEMPORÄRA FÖR LOGGNING
-  const [amount, setAmount] = useState<number>(666);
-  const [message, setMessage] = useState<string>("All makt åt Tengil!");
-  const [formikSenderAcc, setFormikSenderAcc] = useState<number>(1111111111);
-  const [formikReceiverAcc, setFormikReceiverAcc] = useState<number | string >(1222222222);
 
-  const handleSelect = (eventKey: string | null) => {
-    if (eventKey) {
-      const accountNumber = parseInt(eventKey, 10);
+  const handleSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    if (e.target.value) {
+      const accountNumber = parseInt(e.target.value, 10);
+
       const account = props.listOfBankAccounts.find(item => 
         item.accountNumber === accountNumber
       );
       if (account) {
-        setSelectedAccount(account);
+        // setSelectedAccount(account);
         setCurrentBalance(account.balance);
         setSelectedAccountNumber(accountNumber);
       }
@@ -43,15 +37,14 @@ const ModalTransaction: FC<IModalTransactionProps> = (props) => {
     }
   };
 
-  const handleSelectReceiver = (eventKey: any) => {
-    const [, accountNumberStr] = eventKey.split(', ');    
-    const accountNumber = parseInt(accountNumberStr);
+  const handleSelectReceiver = (e: any) => {
+    const accountNumber = parseInt(e.target.value);
     const account = props.listOfBankAccounts.find(item => 
       item.accountNumber === accountNumber
     );
     if (account) {
       setSelectedAccountNumberReceiver(account.accountNumber);
-      setSelectedAccountReceiver(account); 
+      // setSelectedAccountReceiver(account); 
     }    
   }
 
@@ -61,13 +54,15 @@ const ModalTransaction: FC<IModalTransactionProps> = (props) => {
     setShowInternalInput(isChecked);
     setShowExternalInput(!isChecked);
     setShowRecipientName(false);
-    setSelectedAccountNumberReceiver("Välj ett konto i listan");
-    setSelectedAccountReceiver(null);
+    // setSelectedAccountReceiver(null);
   };
 
   const validationSchema = Yup.object({
+    sendingAccountNumber: Yup.number()
+    .max(2147483647, 'Fel på inmatning.')  
+    .required('Obligatoriskt'),
+      
     receivingAccountNumber: Yup.number()
-      .min(1000000000, 'Fel på inmatning.')
       .max(2147483647, 'Fel på inmatning.')
       .required('Obligatoriskt')
       .test('check-equality', 'Från och till konto kan ej vara samma.', function(value) {              
@@ -93,12 +88,13 @@ const ModalTransaction: FC<IModalTransactionProps> = (props) => {
     onSubmit: async values => {
       try {
         let postTransaction: PostTransactionDto= { 
-          sendingAccountNumber: parseInt(selectedAccountNumber.toString()), 
-          receivingAccountNumber: parseInt(selectedAccountNumberReceiver.toString()),
+          sendingAccountNumber: selectedAccountNumber, 
+          receivingAccountNumber: selectedAccountNumberReceiver,
           amount: values.amount,
           message: values.message
         }
         let postTransactionResult = await postNewTransaction(postTransaction);
+        console.log(postTransactionResult)
         props.refresh();
         formik.resetForm();
         handleClose();
@@ -130,21 +126,8 @@ const ModalTransaction: FC<IModalTransactionProps> = (props) => {
       console.error('Fel vid hämtning av mottagarens namn: ' + error);
     }
   }
-  
 
   const handleSubmit= () =>{ 
-    setAmount(formik.values.amount);
-    setMessage(formik.values.message);
-    setFormikSenderAcc(formik.values.sendingAccountNumber);
-    setFormikReceiverAcc(formik.values.receivingAccountNumber);
-
-    let postTransactionTest: PostTransactionDto= { 
-      sendingAccountNumber: parseInt(formikSenderAcc.toString()), 
-      receivingAccountNumber: parseInt(formikReceiverAcc.toString()),
-      amount: amount,
-      message: message
-    }
-    console.log(postTransactionTest);
     formik.handleSubmit();        
   }
 
@@ -157,30 +140,33 @@ const ModalTransaction: FC<IModalTransactionProps> = (props) => {
       <Modal.Header closeButton>
           <Modal.Title data-testid="bankaccount-created-title">Ny överföring</Modal.Title>
       </Modal.Header>
-      
       <Modal.Body>      
         <Form noValidate onSubmit={formik.handleSubmit}>                
           <Row className="align-items-center mb-3">
             <Col sm={2}>
               <Form.Label>Från:</Form.Label>
             </Col>
-            
-            <Col sm={{ span: 2, offset: 1 }}>
-              <Dropdown onSelect={handleSelect}>
-                <Dropdown.Toggle variant="secondary" id="dropdown-basic1">
-                  {selectedAccount ? `${selectedAccount.nameOfAccount}, ${selectedAccount.balance.toFixed(2)} kr` : 'Konto'}
-                </Dropdown.Toggle>
-                <Dropdown.Menu>
-                  {props.listOfBankAccounts.map(item =>
-                  <Dropdown.Item eventKey={item.accountNumber.toString()}>
-                    {item.nameOfAccount}, {item.balance.toFixed(2)} kr
-                  </Dropdown.Item>
-                  )}
-                </Dropdown.Menu>
-              </Dropdown>
+
+            <Col sm={{ span: 8, offset: 1 }}>
+              <Form.Group>
+                <Form.Select 
+                isInvalid={formik.touched.sendingAccountNumber && !!formik.errors.sendingAccountNumber}   
+                name="sendingAccountNumber" 
+                onChange={handleSelect}>
+                  <option>Välj ett konto i listan</option>
+                {props.listOfBankAccounts.map(item =>{
+                      if(item.accountNumber == selectedAccountNumberReceiver) {
+                      return null;
+                    }
+                    return (<option key={`sender_accountnumber_${item.accountNumber}`} value={item.accountNumber.toString()}>
+                      {item.nameOfAccount}, {item.balance.toFixed(2)} kr
+                    </option>)
+                })}
+                </Form.Select>
+              </Form.Group>
             </Col>              
-          </Row>                 
-          
+          </Row>       
+
           <Form.Check 
             type="switch"
             id="custom-switch"
@@ -189,26 +175,45 @@ const ModalTransaction: FC<IModalTransactionProps> = (props) => {
             onChange={handleToggle}
             className="mb-3"
           />
-
           <Row className="align-items-center mb-3">
             <Col sm={2}>
                 <Form.Label>Mottagare:</Form.Label>
             </Col>                      
 
             {showExternalInput && (
-            <Col sm={{ span: 2, offset: 1 }}>
-              <Dropdown onSelect={handleSelectReceiver}>
+            <Col sm={{ span: 8, offset: 1 }}>
+              <Form.Group>
+                <Form.Select 
+                isInvalid={formik.touched.sendingAccountNumber && !!formik.errors.sendingAccountNumber}   
+                name="receivingAccountNumber" 
+                onChange={handleSelectReceiver}>
+                  <option>Välj ett konto i listan</option>
+                {props.listOfBankAccounts.map(item =>{
+                    if(item.accountNumber == selectedAccountNumber) return null;
+
+                    return (<option key={`reciever_accountnumber_${item.accountNumber}`} value={item.accountNumber.toString()}>
+                      {item.nameOfAccount}, {item.balance.toFixed(2)} kr
+                    </option>)
+                })}
+                </Form.Select>
+              </Form.Group>
+              {/* ////////////// */}
+              {/* <Dropdown onSelect={handleSelectReceiver}>
               <Dropdown.Toggle variant="secondary" id="dropdown-basic2">
                 {selectedAccountReceiver ? `${selectedAccountReceiver.nameOfAccount}, ${selectedAccountReceiver.balance.toFixed(2)} kr` : 'Välj ett konto i listan'}
               </Dropdown.Toggle>
                 <Dropdown.Menu>
-                  {props.listOfBankAccounts.map(item =>
-                    <Dropdown.Item eventKey={`${item.balance}, ${item.accountNumber}`}>
-                      {item.nameOfAccount}, {item.balance.toFixed(2)} kr
-                    </Dropdown.Item>
+                  {props.listOfBankAccounts.map(item =>{
+                    if(item.accountNumber == selectedAccountNumber) return null;
+                    return  (
+                    <Dropdown.Item key={`reciever_accountnumber_${item.accountNumber}`} eventKey={`${item.balance}, ${item.accountNumber}`}>
+                    {item.nameOfAccount}, {item.balance.toFixed(2)} kr
+                  </Dropdown.Item>)
+                  }
+                    
                   )}
                 </Dropdown.Menu>
-              </Dropdown>
+              </Dropdown> */}
             </Col>
             )}
 
@@ -219,8 +224,9 @@ const ModalTransaction: FC<IModalTransactionProps> = (props) => {
                   type="number"
                   placeholder="Kontonummer"
                   value={selectedAccountNumberReceiver}
-                  onChange={(e) => setSelectedAccountNumberReceiver(e.target.value)}
-                  name="receivingAccountNumber"                    
+                  onChange={(e) => setSelectedAccountNumberReceiver(parseInt(e.target.value))}
+                  name="receivingAccountNumber"
+                  isInvalid={formik.touched.receivingAccountNumber && !!formik.errors.receivingAccountNumber}                 
                 />
               </Form.Group>
             </Col>            
