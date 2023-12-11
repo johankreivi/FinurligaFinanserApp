@@ -7,14 +7,12 @@ const TransactionList: FC<ITransactionListProps> = (props) => {
     
     return(
         <Row data-testid="transaction-list" className="mt-3">
-
             <Col className="col-xs-0 col-sm-0 col-md-1 col-lg-2 col-xl-2">
-
             </Col>
             <Col className="col-xs-12 col-sm-12 col-md-10 col-lg-8 col-xl-8">
                 <div className="tableBorder" style={{border: "1px #212529", backgroundColor: "#3DB2AF", padding: "10px", margin: "3px", borderRadius: "10px"}}>      
                 {props.transactions && props.transactions.length > 0 ?
-                    <Table className="mb-0" striped bordered hover variant="dark" data-testid="bankaccounts-table">
+                    <Table className="mb-0" striped bordered hover variant="dark" data-testid="bankaccounts-table" >
                         <thead>
                             <tr>
                                 <th className="col-1">Transaktionstyp</th>

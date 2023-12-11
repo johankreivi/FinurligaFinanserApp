@@ -33,6 +33,9 @@ const formik = useFormik({
             }
         } catch (error) {
             console.log(error);
+            if(props.setAlertMessage === undefined || props.handleAlert === undefined) return
+            props.setAlertMessage("Ett fel inträffade vid inloggning.");
+            props.handleAlert(false);
         }
     },
 });

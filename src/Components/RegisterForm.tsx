@@ -82,6 +82,9 @@ const RegisterForm: FC< IRegisterFormProps > = (props) => {
             }
         } catch (error) {
             console.log(error);
+            if(props.setAlertMessage === undefined || props.handleAlert === undefined) return
+            props.setAlertMessage("Ett fel inträffade vid registrering.");
+            props.handleAlert(false);        
         }
     }
 });

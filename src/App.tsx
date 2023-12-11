@@ -49,10 +49,17 @@ function App() {
               setCookie={setCookie} />} />
 
             <Route path='/register' element={<RegisterView 
-            setCookie={setCookie} />} />
+            setCookie={setCookie} 
+            handleAlert={handleAlert}
+            setAlertMessage={setAlertMessage}
+            />} 
+            />
 
             <Route path='/' element={<SignInView 
-            setCookie={setCookie} />} />
+            setCookie={setCookie} 
+            handleAlert={handleAlert}
+            setAlertMessage={setAlertMessage}
+            />} />
 
             <Route path='/transactionview' element={<TransactionView 
             cookieUser={cookie.user} 

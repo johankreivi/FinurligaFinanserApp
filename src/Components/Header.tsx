@@ -1,14 +1,19 @@
-import { FC } from 'react';
+import { FC, useRef } from 'react';
 import Container from 'react-bootstrap/Container';
 import { Button, Navbar } from 'react-bootstrap';
 import { Link, useNavigate } from "react-router-dom";
 import { IHeaderProps } from '../Models/Interfaces/IHeaderProps';
 
+
 const Header: FC<IHeaderProps> = (props) => {  
     const redirect = useNavigate();    
-
+    const audioRef = useRef(new Audio('/oink.wav'));
     const handleLogout = () =>  props.removeCookie!();
-    const handleClick= () => redirect('/home');
+    const handleClick = () => {
+        audioRef.current.play(); 
+        redirect('/home');
+    };
+    
 
     return (
         <Navbar bg="dark" variant="dark" expand="lg" className='mx-0 px-0' style={{borderBottom: '1px solid #3DB2AF'}}>
