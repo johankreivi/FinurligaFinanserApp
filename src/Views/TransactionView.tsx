@@ -94,9 +94,9 @@ const TransactionView: FC<ITransactionViewProps> = (props) => {
                     
                         <Button className="btn-sm" variant="primary" onClick={handleRedirectBack}><ArrowLeft className='m-1' size={18}/>Tillbaka</Button>
                     </Col>
-                    <Col xs="auto">
+                    {/* <Col xs="auto">
                         <Button className="btn-sm" variant="info" onClick={handleShowEditName}>Byt namn<Pencil className='m-1' size={18}/></Button>
-                    </Col>
+                    </Col> */}
                     <Col xs="auto">
                         <Button className="btn-sm" variant="danger" onClick={handleShowDeleteAccount}>Avsluta konto<Trash className='m-1' size={18}/></Button>
                     </Col>                    

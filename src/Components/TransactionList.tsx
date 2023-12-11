@@ -29,7 +29,7 @@ const TransactionList: FC<ITransactionListProps> = (props) => {
                         <tbody data-testid="transaction-rows">
                             {props.transactions.map((item, index) => <tr data-testid={`account_row_${index}`} key={`account_row_${index}`}>
                                 <td data-testid={`account_row_transactionType_${index}`}>{transactionType[item.type]}</td>
-                                <td data-testid={`account_row_timeStamp_${index}`}>{item.timeStamp.toString()}</td>
+                                <td data-testid={`account_row_timeStamp_${index}`}>{new Date(item.timeStamp).toLocaleDateString()}</td>
                                 <td data-testid={`account_row_sendingAccountNumber_${index}`}>{item.sendingAccountNumber === 0 ? '' : item.sendingAccountNumber}</td>
                                 <td data-testid={`account_row_receivingAccountNumber_${index}`}>{item.receivingAccountNumber}</td>
                                 <td data-testid={`account_row_message_${index}`}>{item.message}</td>
