@@ -2,7 +2,7 @@ import { FC } from "react";
 import { IBankAccountListProps } from "../Models/Interfaces/IBankAccountListProps";
 import { Row, Table, Col, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import { ArrowRight } from 'react-bootstrap-icons';
+import { InfoSquare } from 'react-bootstrap-icons';
 
 
 const BankAccountList: FC<IBankAccountListProps> = (props) => {
@@ -21,8 +21,7 @@ const BankAccountList: FC<IBankAccountListProps> = (props) => {
     return (
         <Row data-testid="bankaccount-list" className="mt-5">
             <Col className="col-xs-0 col-sm-0 col-md-1 col-lg-2 col-xl-2"></Col>
-                <Col className="col-xs-12 col-sm-12 col-md-10 col-lg-8 col-xl-8">
-                    <div className="tableBorder" style={{border: "1px #212529", backgroundColor: "#3DB2AF", padding: "10px", margin: "3px", borderRadius: "10px"}}>      
+                <Col className="col-xs-12 col-sm-12 col-md-10 col-lg-8 col-xl-8">     
                         <Table className="mb-0" striped bordered hover variant="dark" data-testid="bankaccounts-table">
                             <thead>
                                 <tr>          
@@ -43,8 +42,7 @@ const BankAccountList: FC<IBankAccountListProps> = (props) => {
                                                 <Button className="btn-sm" 
                                                 onClick={() => handleRedirectToDetails(item.id, item.nameOfAccount, item.accountNumber)} 
                                                 variant="info">
-                                                    Kontodetaljer
-                                                    <ArrowRight className="m-1" size={18}/>
+                                                    <InfoSquare className="m-0" size={18}/>
                                                 </Button>
                                             </td>
                                         </tr>
@@ -58,7 +56,6 @@ const BankAccountList: FC<IBankAccountListProps> = (props) => {
                                 </tr>
                             </tbody>
                         </Table>
-                    </div>
                 </Col>
             <Col className="col-xs-0 col-sm-0 col-md-1 col-lg-2 col-xl-2"></Col>
         </Row>

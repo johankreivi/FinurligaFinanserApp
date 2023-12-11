@@ -41,7 +41,7 @@ const TransactionList: FC<ITransactionListProps> = (props) => {
                     <Table className="mb-0" striped bordered hover variant="dark" data-testid="bankaccounts-table">
                         <tbody>
                             <tr>
-                                <td>Det finns inga transaktioner att visa i "{props.nameOfBankAccount}"".</td>
+                                <td className="col-12">Det finns inga transaktioner att visa i "{props.nameOfBankAccount}"".</td>
                             </tr>
                         </tbody>
                     </Table>
