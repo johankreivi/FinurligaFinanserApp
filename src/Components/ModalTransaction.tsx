@@ -1,18 +1,15 @@
-import { FC, useEffect, useState } from "react";
-import { Modal, Button, Col, Form, Row, Dropdown } from "react-bootstrap";
+import { FC, useState } from "react";
+import { Modal, Button, Col, Form, Row } from "react-bootstrap";
 import { useFormik } from "formik";
 import * as Yup from 'yup';
 import { IModalTransactionProps } from "../Models/Interfaces/IModalTransaction";
 import {PostTransactionDto} from '../Models/Dto/PostTransactionDto'
 import {getRecipientBankAccountDetails, postTransaction as postNewTransaction, postTransaction} from '../Services/APIService';
-import { BankAccount } from "../Models/Dto/BankAccount";
 
 const ModalTransaction: FC<IModalTransactionProps> = (props) => {
   const [currentBalance, setCurrentBalance] = useState<number>(0);    
   const [selectedAccountNumber, setSelectedAccountNumber] = useState<number>(0)
   const [selectedAccountNumberReceiver, setSelectedAccountNumberReceiver] = useState<number>(0);
-  // const [selectedAccount, setSelectedAccount] = useState<BankAccount | null>(null);
-  // const [selectedAccountReceiver, setSelectedAccountReceiver] = useState<BankAccount | null>(null);
   
   // States för vilken input för ReceiverAccount som ska visas
   const [checked, setChecked] = useState(false);
@@ -21,53 +18,19 @@ const ModalTransaction: FC<IModalTransactionProps> = (props) => {
   const [recipientName, setRecipientName] = useState<string>("");
   const [showRecipientName, setShowRecipientName] = useState(false);
 
-  const handleSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    if (e.target.value) {
-      const accountNumber = parseInt(e.target.value, 10);
-
-      const account = props.listOfBankAccounts.find(item => 
-        item.accountNumber === accountNumber
-      );
-      if (account) {
-        // setSelectedAccount(account);
-        setCurrentBalance(account.balance);
-        setSelectedAccountNumber(accountNumber);
-      }
-      else {alert("Detta är inte ett av dina bankkontonummer.")}
-    }
-  };
-
-  const handleSelectReceiver = (e: any) => {
-    const accountNumber = parseInt(e.target.value);
-    const account = props.listOfBankAccounts.find(item => 
-      item.accountNumber === accountNumber
-    );
-    if (account) {
-      setSelectedAccountNumberReceiver(account.accountNumber);
-      // setSelectedAccountReceiver(account); 
-    }    
-  }
-
-  const handleToggle = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const isChecked = e.target.checked;
-    setChecked(isChecked);
-    setShowInternalInput(isChecked);
-    setShowExternalInput(!isChecked);
-    setShowRecipientName(false);
-    // setSelectedAccountReceiver(null);
-  };
-
   const validationSchema = Yup.object({
     sendingAccountNumber: Yup.number()
-    .max(2147483647, 'Fel på inmatning.')  
-    .required('Obligatoriskt'),
-      
+      .max(2147483647, 'Fel på inmatning.')  
+      .required('Obligatoriskt'),
     receivingAccountNumber: Yup.number()
       .max(2147483647, 'Fel på inmatning.')
       .required('Obligatoriskt')
-      .test('check-equality', 'Från och till konto kan ej vara samma.', function(value) {              
-          return  value !== selectedAccountNumber;
-      }),
+      .test('check-equality', 'Från och till konto kan ej vara samma.', function(value) {   
+        return  value !== selectedAccountNumber;
+      })
+      .test('check-equality', 'Angivet mottagarkonto finns ej.', function(value) {              
+        return  accountExists(selectedAccountNumberReceiver);
+    }),
     amount: Yup.number()
       .min(1, "Du måste föra över minst 1kr.")
       .max(currentBalance, "Beloppet överstiger ditt saldo.")
@@ -105,6 +68,23 @@ const ModalTransaction: FC<IModalTransactionProps> = (props) => {
       }
     },
   });
+  
+  const accountExists = async (accountNumber: number) => {
+    let result = await getRecipientBankAccountDetails(accountNumber);
+    console.log(result? true : false)
+    return result? true : false;
+  }
+
+  const handleClose = () =>{
+    props.handleClose();
+    setSelectedAccountNumber(0);
+    setSelectedAccountNumberReceiver(0);
+    setChecked(false);
+    setShowRecipientName(false);
+    setShowInternalInput(false);
+    setShowExternalInput(true);
+    formik.resetForm();
+  }
 
   const handleGetRecipient = async () => {
     setRecipientName("");
@@ -113,27 +93,58 @@ const ModalTransaction: FC<IModalTransactionProps> = (props) => {
       const accountNumber = typeof selectedAccountNumberReceiver === 'string' 
         ? parseInt(selectedAccountNumberReceiver, 10)
         : selectedAccountNumberReceiver;      
-      
       if (!isNaN(accountNumber)) {
-        let recipientDetails = await getRecipientBankAccountDetails(accountNumber);
-        const fullNameOfRecipient = recipientDetails.firstName + " " + recipientDetails.lastName; 
-        setRecipientName(fullNameOfRecipient);        
-      } else {
-        setRecipientName("Angivet bankkonto saknar ägare");
-      }
+        try{
+          let recipientDetails = await getRecipientBankAccountDetails(accountNumber);
+          const fullNameOfRecipient = recipientDetails.firstName + " " + recipientDetails.lastName; 
+          setRecipientName(fullNameOfRecipient);  
+        }
+        catch{
+          setRecipientName("Angivet bankkonto saknar ägare");
+        }
       setShowRecipientName(true);
-    } catch (error) {
+    }}
+     catch (error) {
       console.error('Fel vid hämtning av mottagarens namn: ' + error);
     }
   }
 
+  const handleSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    if (e.target.value) {
+      const accountNumber = parseInt(e.target.value, 10);
+
+      const account = props.listOfBankAccounts.find(item => 
+        item.accountNumber === accountNumber
+      );
+      if (account) {
+        setCurrentBalance(account.balance);
+        setSelectedAccountNumber(accountNumber);
+      }
+      else {alert("Detta är inte ett av dina bankkontonummer.")}
+    }
+  };
+
+  const handleSelectReceiver = (e: any) => {
+    const accountNumber = parseInt(e.target.value);
+    const account = props.listOfBankAccounts.find(item => 
+      item.accountNumber === accountNumber
+    );
+    if (account) {
+      setSelectedAccountNumberReceiver(account.accountNumber);
+    }    
+  }
+  
   const handleSubmit= () =>{ 
     formik.handleSubmit();        
   }
 
-  const handleClose = () =>{
-    props.handleClose();
-  }
+  const handleToggle = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const isChecked = e.target.checked;
+    setChecked(isChecked);
+    setShowInternalInput(isChecked);
+    setShowExternalInput(!isChecked);
+    setShowRecipientName(false);
+  };
 
   return (
     <Modal data-testid="delete-account" show={props.show} onHide={handleClose}>
@@ -197,23 +208,6 @@ const ModalTransaction: FC<IModalTransactionProps> = (props) => {
                 })}
                 </Form.Select>
               </Form.Group>
-              {/* ////////////// */}
-              {/* <Dropdown onSelect={handleSelectReceiver}>
-              <Dropdown.Toggle variant="secondary" id="dropdown-basic2">
-                {selectedAccountReceiver ? `${selectedAccountReceiver.nameOfAccount}, ${selectedAccountReceiver.balance.toFixed(2)} kr` : 'Välj ett konto i listan'}
-              </Dropdown.Toggle>
-                <Dropdown.Menu>
-                  {props.listOfBankAccounts.map(item =>{
-                    if(item.accountNumber == selectedAccountNumber) return null;
-                    return  (
-                    <Dropdown.Item key={`reciever_accountnumber_${item.accountNumber}`} eventKey={`${item.balance}, ${item.accountNumber}`}>
-                    {item.nameOfAccount}, {item.balance.toFixed(2)} kr
-                  </Dropdown.Item>)
-                  }
-                    
-                  )}
-                </Dropdown.Menu>
-              </Dropdown> */}
             </Col>
             )}
 
@@ -224,10 +218,14 @@ const ModalTransaction: FC<IModalTransactionProps> = (props) => {
                   type="number"
                   placeholder="Kontonummer"
                   value={selectedAccountNumberReceiver}
+                  onBlur={formik.handleBlur}
                   onChange={(e) => setSelectedAccountNumberReceiver(parseInt(e.target.value))}
                   name="receivingAccountNumber"
                   isInvalid={formik.touched.receivingAccountNumber && !!formik.errors.receivingAccountNumber}                 
                 />
+                <Form.Control.Feedback type="invalid">
+                                {formik.errors.receivingAccountNumber}
+                </Form.Control.Feedback>
               </Form.Group>
             </Col>            
             )}
