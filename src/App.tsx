@@ -64,7 +64,9 @@ function App() {
             <Route path='/transactionview' element={<TransactionView 
             cookieUser={cookie.user} 
             setCookie={setCookie} 
-            removeCookie={handleRemove} />} />
+            removeCookie={handleRemove} 
+            handleAlert={handleAlert}
+            setAlertMessage={setAlertMessage}/>} />
 
           </Routes>
         </div>

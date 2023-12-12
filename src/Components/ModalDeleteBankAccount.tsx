@@ -1,14 +1,12 @@
 import { FC } from "react";
 import { IModalProps } from "../Models/Interfaces/IModalProps";
-import { Modal, Button, Col, Form, Row } from "react-bootstrap";
-import { useFormik } from "formik";
-import * as Yup from 'yup';
+import { Modal, Button, Col, Row } from "react-bootstrap";
 
 const ModalDeleteBankAccount: FC<IModalProps> = (props) => {
     
     return (
         <Modal data-testid="delete-account" show={props.show} onHide={props.handleClose}>
-            <Modal.Header closeButton>
+            <Modal.Header closeButton style={{ backgroundColor: '#eaeaea' }}>
                 <Modal.Title data-testid="bankaccount-created-title">Avsluta konto</Modal.Title>
             </Modal.Header>
             <Modal.Body>
@@ -18,7 +16,7 @@ const ModalDeleteBankAccount: FC<IModalProps> = (props) => {
                     </Col>
                 </Row>   
             </Modal.Body>
-            <Modal.Footer>          
+            <Modal.Footer style={{ backgroundColor: '#eaeaea' }}>         
                 <Button variant="secondary" onClick={props.handleClose} data-testid="bankaccount-created-close-button">
                     Nej
                 </Button>
