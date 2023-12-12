@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, useCallback, useEffect, useState } from 'react';
 import { Row, Button, Col, Alert, } from 'react-bootstrap';
 import Container from 'react-bootstrap/Container';
 import { IRegisterFormProps } from '../Models/Interfaces/IRegisterFormProps';
@@ -12,34 +12,33 @@ import { UserDetails } from '../Models/Dto/UserDetails';
 import ModalTransaction from '../Components/ModalTransaction';
 import { ArrowClockwise, PlusCircle } from 'react-bootstrap-icons';
 
-
 const Home: FC<IRegisterFormProps> = (props) => {  
     const redirect = useNavigate();    
 
     const [showCreateAccountModal, setShowCreateAccountModal] = useState<boolean>(false);
-    const [showNewTransaction, setShowNewTransaction] = useState<boolean>(false);
+    const [showNewTransaction, setShowNewTransaction] = useState<boolean>(false);    
 
-    useEffect(() => {
-        if(!props.cookieUser || !props.cookieUser.isAuthorized){
-            redirect('/');
-        }
-        refresh();
-        getFullName();
-    }, [props.cookieUser?.isAuthorized, redirect]);
-
-    const refresh = async () => {        
+    const refresh = useCallback(async () => {
         try {
             const accounts = await getAllUserBankAccounts(props.cookieUser?.id);
             setListOfBankAccounts(accounts);
         } catch (error) {
             console.error('Error fetching bank accounts:', error);
         }
-    }
+    }, [props.cookieUser?.id]);
 
-    const getFullName = async () => {
-        const user = await getUserDetails(props.cookieUser?.id);
-        setUserDetails(user);
-    }
+    useEffect(() => {
+        if(!props.cookieUser || !props.cookieUser.isAuthorized){
+            redirect('/');
+        }
+        refresh();
+        
+        const getFullName = async () => {
+            const user = await getUserDetails(props.cookieUser?.id);
+            setUserDetails(user);
+        }
+        getFullName();
+    }, [props.cookieUser, redirect, refresh]);    
 
     const [userDetails, setUserDetails] = useState<UserDetails>({id: -1, firstName: "aa", lastName: "bb"});
     const handleShowCreateAccountModal = () => setShowCreateAccountModal(true);

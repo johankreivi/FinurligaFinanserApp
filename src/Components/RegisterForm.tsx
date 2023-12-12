@@ -5,7 +5,7 @@ import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Image from 'react-bootstrap/esm/Image';
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { postLoginUser, postUserAccount } from '../Services/APIService';
@@ -37,6 +37,7 @@ const RegisterForm: FC< IRegisterFormProps > = (props) => {
             .matches(/[0-9]/, 'Måste vara minst en siffra')
             .matches(/[a-ö]/, 'Måste vara minst en liten bokstav')
             .matches(/[A-Ö]/, 'Måste vara minst en stor bokstav')
+            .matches(/[\s\S]*[^\w\s]/, 'Måste innehålla minst ett specialtecken')
             .required('Obligatoriskt'),
         confirmPassword: Yup.string()
             .oneOf([Yup.ref('password')], 'Lösenorden måste matcha')

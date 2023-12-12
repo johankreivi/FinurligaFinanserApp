@@ -24,7 +24,7 @@ const ModalTransaction: FC<IModalTransactionProps> = (props) => {
     receivingAccountNumber: Yup.number()
       .test('check-equality', 'Från och till konto kan ej vara samma.', function(value) {  
         if(formik.values.sendingAccountNumber === null) return true; 
-        let sender: number = parseInt(formik.values.sendingAccountNumber);
+        let sender: number = parseInt(formik.values.sendingAccountNumber);  
         return  value !== sender;
       })
       .test('check-equality', 'Angivet mottagarkonto finns ej.', function(value) {              
@@ -55,6 +55,7 @@ const ModalTransaction: FC<IModalTransactionProps> = (props) => {
           amount: values.amount,
           message: values.message
         }
+        console.log(postTransaction);
         await postNewTransaction(postTransaction);
         props.refresh();
         formik.resetForm();
@@ -96,15 +97,16 @@ const ModalTransaction: FC<IModalTransactionProps> = (props) => {
     setShowExternalInput(checked);
   };
 
-  useEffect(() => {
+  useEffect(() => {    
+    // eslint-disable-next-line eqeqeq
     let account = props.listOfBankAccounts.find(x => x.accountNumber == formik.values.sendingAccountNumber);
-    if(account)
+    if(account === undefined) return
     setCurrentBalance(account.balance);
-  }, [formik.values.sendingAccountNumber])
+  }, [formik.values.sendingAccountNumber, props.listOfBankAccounts])
 
   return (
-    <Modal data-testid="delete-account" show={props.show} onHide={handleClose}>
-      <Modal.Header closeButton>
+    <Modal data-testid="create-transaction" show={props.show} onHide={handleClose}>
+      <Modal.Header closeButton style={{ backgroundColor: '#eaeaea' }}>
           <Modal.Title data-testid="bankaccount-created-title">Ny överföring</Modal.Title>
       </Modal.Header>
       <Form noValidate onSubmit={formik.handleSubmit}>                
@@ -162,7 +164,7 @@ const ModalTransaction: FC<IModalTransactionProps> = (props) => {
                   >
                     <option>Välj ett konto i listan</option>
                   {props.listOfBankAccounts.map(item =>{
-                      if(item.accountNumber == formik.values.sendingAccountNumber) return null;
+                      if(item.accountNumber === formik.values.sendingAccountNumber) return null;
 
                       return (<option key={`reciever_accountnumber_${item.accountNumber}`} value={item.accountNumber.toString()}>
                         {item.nameOfAccount}, {item.balance.toFixed(2)} kr
@@ -261,7 +263,7 @@ const ModalTransaction: FC<IModalTransactionProps> = (props) => {
               </Col>
             </Row>      
         </Modal.Body>
-        <Modal.Footer >
+        <Modal.Footer style={{ backgroundColor: '#eaeaea' }}>
           <Button variant="secondary" onClick={handleClose} data-testid="bankaccount-created-close-button">
             Avbryt
           </Button>

@@ -23,8 +23,7 @@ const Header: FC<IHeaderProps> = (props) => {
     return (
         <Navbar bg="dark" variant="dark" expand="lg" className='mx-0 px-0' style={{borderBottom: '1px solid #3DB2AF'}}>
             <Container fluid >
-                    <Navbar.Brand>
-                    <a>
+                    <Navbar.Brand>                        
                         <img
                             src="/fflogo.png" 
                             height="80" 
@@ -35,8 +34,7 @@ const Header: FC<IHeaderProps> = (props) => {
                             onClick={handleClick}
                             onKeyUp={handleKeyPress}
                             tabIndex={1}
-                        />
-                    </a>
+                        />                        
                     </Navbar.Brand>                   
                     <div><h1>Finurliga Finanser</h1><p className='text-center fst-italic'>"Banken som inte ställer några frågor..."</p></div>
                     <div className= 'text-center rounded' style={{ border: '1px solid #3DB2AF', backgroundColor: '#001A2F' }}>               

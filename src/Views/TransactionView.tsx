@@ -10,7 +10,7 @@ import { getBankAccountTransactions, getUserDetails } from '../Services/APIServi
 import { Button, Col, Row } from 'react-bootstrap';
 import ModalEditBankAccountName from '../Components/ModalEditBankAccountName';
 import ModalDeleteBankAccount from '../Components/ModalDeleteBankAccount';
-import { ArrowLeft, Pencil, Trash } from 'react-bootstrap-icons';
+import { ArrowLeft, Trash } from 'react-bootstrap-icons';
 
 const TransactionView: FC<ITransactionViewProps> = (props) => {  
 
@@ -46,9 +46,8 @@ const TransactionView: FC<ITransactionViewProps> = (props) => {
         }
 
         getAllTransactions();
-        getFullName();
-        console.log(transactions)
-    }, [props.cookieUser, props.cookieUser.isAuthorized, redirect]);
+        getFullName();        
+    }, [props.cookieUser, props.cookieUser.isAuthorized, redirect, bankAccountId]);
    
 
     const handleShowDeleteAccount = async () => {
@@ -62,11 +61,7 @@ const TransactionView: FC<ITransactionViewProps> = (props) => {
     const handleSubmitDeleteAccount = () =>{
         setshowDeleteAccount(false);
         alert(`Ej implementerad ännu. Försökte ta bort "${nameOfBankAccount}" med id:${bankAccountId}.`);
-    }
-
-    const handleShowEditName = async () => {
-        setShowEditName(true)
-    }
+    }    
 
     const handleCloseEditName = () =>{
         setShowEditName(false);

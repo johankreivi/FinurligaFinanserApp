@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useState } from "react";
 import { ICreateBankAccountFormProps } from "../Models/Interfaces/ICreateBankAccountFormProps";
 import { Button, Col, Form, Modal, Row } from "react-bootstrap";
 import * as Yup from 'yup';
@@ -53,7 +53,7 @@ const handleClose = () => {
 return (
     <>        
         <Modal data-testid="create-bankaccount" show={props.show && !showBankAccountOrConfirmitionInModal} onHide={props.handleClose}>
-            <Modal.Header closeButton>
+            <Modal.Header closeButton style={{ backgroundColor: '#eaeaea' }}>
             <Modal.Title>Skapa bankkonto</Modal.Title>
             </Modal.Header>
             <Modal.Body>
@@ -81,7 +81,7 @@ return (
             </Form>
 
             </Modal.Body>
-            <Modal.Footer>          
+            <Modal.Footer style={{ backgroundColor: '#eaeaea' }}>          
                 <Button variant="secondary" onClick={handleClose} data-testid="bankaccount-creation-modal-abort">
                     Avbryt
                 </Button>
@@ -92,7 +92,7 @@ return (
         </Modal>
 
         <Modal data-testid="bankaccount-created-confirmation" show={props.show && showBankAccountOrConfirmitionInModal} onHide={props.handleClose}>
-            <Modal.Header closeButton>
+            <Modal.Header closeButton style={{ backgroundColor: '#eaeaea' }}>
             <Modal.Title data-testid="bankaccount-created-title">Bankkonto skapat!</Modal.Title>
             </Modal.Header>
             <Modal.Body>
@@ -104,7 +104,7 @@ return (
             </Row>   
 
             </Modal.Body>
-            <Modal.Footer>          
+            <Modal.Footer style={{ backgroundColor: '#eaeaea' }}>          
                 <Button variant="secondary" onClick={handleClose} data-testid="bankaccount-created-close-button">
                     Stäng
                 </Button>                

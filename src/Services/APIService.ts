@@ -2,7 +2,6 @@ import axios from "axios";
 import { PostUserAccountDto } from "../Models/Dto/PostUserAccountDto";
 import { PostLoginUserDto } from "../Models/Dto/PostLoginUserDto";
 import { PostBankAccountDto } from "../Models/Dto/PostBankAccountDto";
-import { ResponseUserAccountDto } from "../Models/Dto/ResponseUserAccountDto";
 import { PostTransactionDto } from "../Models/Dto/PostTransactionDto";
 
 const LOCALHOST = 'https://localhost:7030/api'
@@ -10,8 +9,7 @@ const LOCALHOST = 'https://localhost:7030/api'
 export const postUserAccount = async (userAccount: PostUserAccountDto) => {
     try {   
         const createdUser = await axios.post(`${LOCALHOST}/UserAccount/CreateUserAccount`, userAccount)
-                          .then(response => response.data);
-        const userDetails = await getUserDetails(createdUser.id);                  
+                          .then(response => response.data);                          
         await postBankAccount({userAccountId: createdUser.id, nameOfAccount: `Privatkonto`});
         
         return createdUser;
