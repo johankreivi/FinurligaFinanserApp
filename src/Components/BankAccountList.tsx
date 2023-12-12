@@ -19,10 +19,10 @@ const BankAccountList: FC<IBankAccountListProps> = (props) => {
     }
 
     return (
-        <Row data-testid="bankaccount-list" className="mt-5">
+        <Row data-testid="bankaccount-list" className="mt-5 px-0">
             <Col className="col-xs-0 col-sm-0 col-md-1 col-lg-2 col-xl-2"></Col>
-                <Col className="col-xs-12 col-sm-12 col-md-10 col-lg-8 col-xl-8">     
-                        <Table className="mb-0" striped bordered hover variant="dark" data-testid="bankaccounts-table">
+                <Col className="col-xs-12 col-sm-12 col-md-10 col-lg-8 col-xl-8 px-0" style={{border: '1px solid #3DB2AF'}}>     
+                        <Table className="mb-0"  striped bordered hover variant="dark" data-testid="bankaccounts-table">
                             <thead>
                                 <tr>          
                                     <th className="col-2">Kontonamn</th>
