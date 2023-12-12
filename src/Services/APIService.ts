@@ -12,7 +12,7 @@ export const postUserAccount = async (userAccount: PostUserAccountDto) => {
         const createdUser = await axios.post(`${LOCALHOST}/UserAccount/CreateUserAccount`, userAccount)
                           .then(response => response.data);
         const userDetails = await getUserDetails(createdUser.id);                  
-        await postBankAccount({userAccountId: createdUser.id, nameOfAccount: `${userDetails.firstName} ${userDetails.lastName} Privatkonto`});
+        await postBankAccount({userAccountId: createdUser.id, nameOfAccount: `Privatkonto`});
         
         return createdUser;
     
