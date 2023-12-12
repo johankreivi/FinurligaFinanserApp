@@ -86,6 +86,13 @@ export const postTransaction = async (postTransactionDto: PostTransactionDto) =>
     
     } catch (error) {     
         console.log('Error when creating transaction: '+error)
-    }    
+    }   
+}
 
+export const deleteBankAccount = async (userId: number) => {
+    try {   
+        return await axios.delete(`${LOCALHOST}/BankAccount/${userId}`);
+    } catch (error) {     
+        console.log('Error when deleting bankaccount: '+error)
+    }   
 }

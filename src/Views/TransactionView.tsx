@@ -6,7 +6,7 @@ import { UserDetails } from '../Models/Dto/UserDetails';
 import { ITransactionViewProps } from '../Models/Interfaces/ITransactionViewProps';
 import TransactionList from '../Components/TransactionList';
 import { TransactionDetails } from '../Models/Dto/TransactionDetails';
-import { getBankAccountTransactions, getUserDetails } from '../Services/APIService';
+import { deleteBankAccount, getBankAccountTransactions, getUserDetails } from '../Services/APIService';
 import { Button, Col, Row } from 'react-bootstrap';
 import ModalEditBankAccountName from '../Components/ModalEditBankAccountName';
 import ModalDeleteBankAccount from '../Components/ModalDeleteBankAccount';
@@ -58,9 +58,27 @@ const TransactionView: FC<ITransactionViewProps> = (props) => {
         setshowDeleteAccount(false);
     }
 
-    const handleSubmitDeleteAccount = () =>{
-        setshowDeleteAccount(false);
-        alert(`Ej implementerad ännu. Försökte ta bort "${nameOfBankAccount}" med id:${bankAccountId}.`);
+    const handleSubmitDeleteAccount = async () => {
+        if (nameOfBankAccount === "Privatkonto") {
+            if (props.handleAlert === undefined || props.setAlertMessage === undefined) return;
+            props.handleAlert(false);
+            props.setAlertMessage("Det är förbjudet att ta bort Privatkonto.");
+            setshowDeleteAccount(false);
+            return;
+        }
+        try {
+            await deleteBankAccount(bankAccountId);
+            setshowDeleteAccount(false);
+            if (props.handleAlert === undefined || props.setAlertMessage === undefined) return;
+            props.handleAlert(true);
+            props.setAlertMessage(`${nameOfBankAccount} är borttaget.`);            
+            redirect("/home");
+        } catch{
+            if (props.handleAlert === undefined || props.setAlertMessage === undefined) return;
+            props.handleAlert(false);
+            props.setAlertMessage(`Något gick fel vid borttagning av ${nameOfBankAccount}. Försök igen!`); 
+        }
+        
     }    
 
     const handleCloseEditName = () =>{
