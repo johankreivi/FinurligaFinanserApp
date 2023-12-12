@@ -5,7 +5,7 @@ import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Image from 'react-bootstrap/esm/Image';
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { postLoginUser, postUserAccount } from '../Services/APIService';
@@ -37,6 +37,7 @@ const RegisterForm: FC< IRegisterFormProps > = (props) => {
             .matches(/[0-9]/, 'Måste vara minst en siffra')
             .matches(/[a-ö]/, 'Måste vara minst en liten bokstav')
             .matches(/[A-Ö]/, 'Måste vara minst en stor bokstav')
+            .matches(/[\s\S]*[^\w\s]/, 'Måste innehålla minst ett specialtecken')
             .required('Obligatoriskt'),
         confirmPassword: Yup.string()
             .oneOf([Yup.ref('password')], 'Lösenorden måste matcha')
@@ -70,14 +71,10 @@ const RegisterForm: FC< IRegisterFormProps > = (props) => {
                 });
                 
                 if (loginResponse.isAuthorized) {
-                    props.setAlertMessage(userResponse.message);
-                    props.handleAlert(true);
                     props.setCookie("user" , {id: loginResponse.id, userName: loginResponse.userName, isAuthorized: loginResponse.isAuthorized});          
                     navigate('/Home');
                 } 
                 else {
-                    props.setAlertMessage('Det gick inte att skapa kontot.');
-                    props.handleAlert(false);
                     navigate('/'); 
                 }
             }
@@ -85,9 +82,10 @@ const RegisterForm: FC< IRegisterFormProps > = (props) => {
                 navigate('/');
             }
         } catch (error) {
-            props.setAlertMessage('Något gick fel, försök igen!');
-            props.handleAlert(false);
             console.log(error);
+            if(props.setAlertMessage === undefined || props.handleAlert === undefined) return
+            props.setAlertMessage("Ett fel inträffade vid registrering.");
+            props.handleAlert(false);        
         }
     }
 });
@@ -98,7 +96,6 @@ return(
             <Row className='align-items-center'>
                 <Col>
                     <h1 className='text-light mb-5 text-center'>Registrera ny användare</h1>
-
                     <Form.Group className="mb-3">
                         <Form.Label className='text-light'>Användarnamn</Form.Label>
                         <Form.Control
@@ -182,13 +179,11 @@ return(
 
 
                     <div className="text-center d-flex justify-content-between">
-                        <Link to="/">
-                            <Button variant="light" className='ms-5'>
-                                Avbryt
-                            </Button>
-                        </Link> 
+                        <Button href="/" variant="light" className='ms-5 btn-sm'>
+                            Avbryt
+                        </Button>
 
-                        <Button className='me-5' variant="light" type="submit">
+                        <Button className='me-5 btn-sm' variant="light" type="submit">
                             Registera
                         </Button>
                     </div>  

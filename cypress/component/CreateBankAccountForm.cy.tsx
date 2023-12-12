@@ -10,12 +10,6 @@ const apiUri = "https://localhost:7030/api/BankAccount";
 const homeComponent = 
 <Router>
     <Home
-    handleAlert={function (success: boolean): void {
-        throw new Error("Function not implemented.");
-    }}
-    setAlertMessage ={function (message: string): void {
-        throw new Error("Function not implemented.");
-    }}
     setCookie={function (name: string, value: any): void {
         throw new Error("Function not implemented.");
         }}

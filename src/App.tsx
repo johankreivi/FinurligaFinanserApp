@@ -7,6 +7,7 @@ import RegisterView from './Views/RegisterView';
 import { useState } from 'react';
 import { Alert } from 'react-bootstrap';
 import { CookiesProvider, useCookies } from "react-cookie";
+import TransactionView from './Views/TransactionView';
 
 function App() {
   
@@ -39,14 +40,33 @@ function App() {
           null
       }
       <CookiesProvider>
-        <div data-bs-theme='dark' style={{ margin: '0px',backgroundColor: '#001A2F', height: '100vh' }}>
+        <div data-bs-theme='dark' style={{ margin: '0px',backgroundColor: '#001A2F', height: '100%', minHeight: '100vh' }}>
         
           <Routes>
-            <Route path='/Home' element={<Home removeCookie={handleRemove} cookieUser={cookie.user} setCookie={setCookie}  handleAlert={handleAlert} setAlertMessage={setAlertMessage}  />} />
-            <Route path='/register' element={<RegisterView setCookie={setCookie}  handleAlert={handleAlert} setAlertMessage={setAlertMessage} />} />
-            <Route path='/' element={<SignInView setCookie={setCookie} handleAlert={handleAlert} setAlertMessage={setAlertMessage}  />} />
+            <Route path='/Home' element={<Home 
+              removeCookie={handleRemove} 
+              cookieUser={cookie.user} 
+              setCookie={setCookie} />} />
+
+            <Route path='/register' element={<RegisterView 
+            setCookie={setCookie} 
+            handleAlert={handleAlert}
+            setAlertMessage={setAlertMessage}
+            />} 
+            />
+
+            <Route path='/' element={<SignInView 
+            setCookie={setCookie} 
+            handleAlert={handleAlert}
+            setAlertMessage={setAlertMessage}
+            />} />
+
+            <Route path='/transactionview' element={<TransactionView 
+            cookieUser={cookie.user} 
+            setCookie={setCookie} 
+            removeCookie={handleRemove} />} />
+
           </Routes>
-        
         </div>
       </CookiesProvider>
     </>

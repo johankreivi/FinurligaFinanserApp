@@ -2,16 +2,15 @@ import axios from "axios";
 import { PostUserAccountDto } from "../Models/Dto/PostUserAccountDto";
 import { PostLoginUserDto } from "../Models/Dto/PostLoginUserDto";
 import { PostBankAccountDto } from "../Models/Dto/PostBankAccountDto";
-import { ResponseUserAccountDto } from "../Models/Dto/ResponseUserAccountDto";
+import { PostTransactionDto } from "../Models/Dto/PostTransactionDto";
 
 const LOCALHOST = 'https://localhost:7030/api'
 
 export const postUserAccount = async (userAccount: PostUserAccountDto) => {
     try {   
         const createdUser = await axios.post(`${LOCALHOST}/UserAccount/CreateUserAccount`, userAccount)
-                          .then(response => response.data);
-        const userDetails = await getUserDetails(createdUser.id);                  
-        await postBankAccount({userAccountId: createdUser.id, nameOfAccount: `${userDetails.firstName} ${userDetails.lastName} Privatkonto`});
+                          .then(response => response.data);                          
+        await postBankAccount({userAccountId: createdUser.id, nameOfAccount: `Privatkonto`});
         
         return createdUser;
     
@@ -58,4 +57,35 @@ export const getUserDetails = async (userAccountId: number) => {
     } catch (error) {     
         console.log('Error when creating bankaccount: '+error)
     }    
+}
+
+export const getBankAccountTransactions = async (id: number) => {
+    try {   
+        return await axios.get(`${LOCALHOST}/Transaction/BankAccount/${id}`)
+                          .then(response => response.data);
+    
+    } catch (error) {     
+        console.log('Error when getting transactions: '+error)
+    } 
+}
+
+export const getRecipientBankAccountDetails = async (accountNumber: number) => {
+    try {   
+        return await axios.get(`${LOCALHOST}/UserAccount/GetUserAccountByBankAccountNumber/${accountNumber}`)
+                          .then(response => response.data);
+    
+    } catch (error) {     
+        console.log('Error when getting user account names: '+error)
+    } 
+}
+
+export const postTransaction = async (postTransactionDto: PostTransactionDto) => {
+    try {   
+        return await axios.post(`${LOCALHOST}/Transaction`, postTransactionDto)
+                          .then(response => response.data);
+    
+    } catch (error) {     
+        console.log('Error when creating transaction: '+error)
+    }    
+
 }

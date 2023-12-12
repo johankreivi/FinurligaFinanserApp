@@ -7,11 +7,7 @@ describe("SignInForm", () => {
         <Router>
             <SignInForm setCookie={function (name: string, value: any): void {
                 throw new Error("Function not implemented.");
-                }}handleAlert={function (success: boolean): void {
-                throw new Error("Function not implemented.");
-            } } setAlertMessage={function (message: string): void {
-                throw new Error("Function not implemented.");
-            } }  />
+                }} />
         </Router>
         );
     });
@@ -20,11 +16,7 @@ describe("SignInForm", () => {
             <Router>
             <SignInForm setCookie={function (name: string, value: any): void {
                 throw new Error("Function not implemented.");
-                }}handleAlert={function (success: boolean): void {
-                throw new Error("Function not implemented.");
-            } } setAlertMessage={function (message: string): void {
-                throw new Error("Function not implemented.");
-            } }  />
+                }} />
             </Router>
             );
         cy.get("form").should("exist");
@@ -34,11 +26,7 @@ describe("SignInForm", () => {
             <Router>
             <SignInForm setCookie={function (name: string, value: any): void {
                 throw new Error("Function not implemented.");
-                }}handleAlert={function (success: boolean): void {
-                throw new Error("Function not implemented.");
-            } } setAlertMessage={function (message: string): void {
-                throw new Error("Function not implemented.");
-            } }  />
+                }} />
             </Router>
             );
         cy.get("a").should("exist");
@@ -48,11 +36,7 @@ describe("SignInForm", () => {
             <Router>
             <SignInForm setCookie={function (name: string, value: any): void {
                 throw new Error("Function not implemented.");
-                }}handleAlert={function (success: boolean): void {
-                throw new Error("Function not implemented.");
-            } } setAlertMessage={function (message: string): void {
-                throw new Error("Function not implemented.");
-            } }  />
+                }} />
             </Router>
             );
         cy.get("button").should("exist");
@@ -62,11 +46,7 @@ describe("SignInForm", () => {
             <Router>
             <SignInForm setCookie={function (name: string, value: any): void {
                 throw new Error("Function not implemented.");
-                }}handleAlert={function (success: boolean): void {
-                throw new Error("Function not implemented.");
-            } } setAlertMessage={function (message: string): void {
-                throw new Error("Function not implemented.");
-            } }  />
+                }} />
             </Router>
             );
         cy.get("input").should("exist");

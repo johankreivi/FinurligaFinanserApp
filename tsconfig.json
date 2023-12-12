@@ -28,5 +28,6 @@
     "cypress/component/Header.cy.tsx",
     "cypress/component/CreateBankAccountForm.cy.tsx",
     "cypress/component/BankAccountList.cy.tsx",
+    "cypress/component/Home.cy.tsx",
   ]
 }

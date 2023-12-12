@@ -28,14 +28,14 @@ const formik = useFormik({
         try {
             let response : ResponseLoginUserDto = await postLoginUser(postLogin);         
             if(response.isAuthorized){
-                props.handleAlert(true);
-                props.setAlertMessage('Inloggning lyckades! Välkommen ' + response.userName + '!');
                 props.setCookie("user" , {id: response.id, userName: response.userName, isAuthorized: response.isAuthorized});
                 redirect('/Home');
             }
         } catch (error) {
+            console.log(error);
+            if(props.setAlertMessage === undefined || props.handleAlert === undefined) return
+            props.setAlertMessage("Ett fel inträffade vid inloggning.");
             props.handleAlert(false);
-            props.setAlertMessage('Inloggning misslyckades!');
         }
     },
 });

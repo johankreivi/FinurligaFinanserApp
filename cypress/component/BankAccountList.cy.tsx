@@ -40,7 +40,13 @@ const userCookieValue: string = "%7B%22id%22%3A3%2C%22userName%22%3A%22Bobo55%22
 
 const bankAccountListComponent = 
 <Router>
-    <BankAccountList listOfBankAccounts={bankAccounts}/>
+    <BankAccountList listOfBankAccounts={bankAccounts}  
+    refresh={function (): void {
+        throw new Error("Function not implemented.");
+        }}
+    handleShowModal={function (): void {
+        throw new Error("Function not implemented.");
+        }}/>
 </Router>
 
 describe("BankAccountList", () =>{
