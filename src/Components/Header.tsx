@@ -14,6 +14,11 @@ const Header: FC<IHeaderProps> = (props) => {
         redirect('/home');
     };
     
+    const handleKeyPress = (event: any) => {
+        if (event.key === 'Enter') {
+          handleClick();
+        }
+      };
 
     return (
         <Navbar bg="dark" variant="dark" expand="lg" className='mx-0 px-0' style={{borderBottom: '1px solid #3DB2AF'}}>
@@ -28,6 +33,8 @@ const Header: FC<IHeaderProps> = (props) => {
                             data-testid="header-logo"
                             style={{ border: '1px solid #3DB2AF', borderRadius: '10px', cursor: 'pointer' }}
                             onClick={handleClick}
+                            onKeyUp={handleKeyPress}
+                            tabIndex={1}
                         />
                     </a>
                     </Navbar.Brand>                   
