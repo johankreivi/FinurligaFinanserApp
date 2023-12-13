@@ -9,13 +9,12 @@ import { Alert } from 'react-bootstrap';
 import { CookiesProvider, useCookies } from "react-cookie";
 import TransactionView from './Views/TransactionView';
 
-function App() {
-  
+function App() {  
   const [showAlert, setShowAlert] = useState(false);
   const [alertSuccess, setAlertSuccess] = useState(false);
-  const [alertMessage, setAlertMessage] = useState('');
-  
+  const [alertMessage, setAlertMessage] = useState('');  
   const [cookie, setCookie, removeCookie] = useCookies(['user']);
+  
   const handleRemove = () => removeCookie('user', { path: '/', });
 
   const handleAlert = (success: boolean) => {

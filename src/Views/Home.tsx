@@ -13,10 +13,13 @@ import ModalTransaction from '../Components/ModalTransaction';
 import { ArrowClockwise, PlusCircle } from 'react-bootstrap-icons';
 
 const Home: FC<IRegisterFormProps> = (props) => {  
-    const redirect = useNavigate();    
-
+    const [userDetails, setUserDetails] = useState<UserDetails>({id: -1, firstName: "aa", lastName: "bb"});    
+    const [showAlert, setShowAlert] = useState(false);
     const [showCreateAccountModal, setShowCreateAccountModal] = useState<boolean>(false);
-    const [showNewTransaction, setShowNewTransaction] = useState<boolean>(false);    
+    const [showNewTransaction, setShowNewTransaction] = useState<boolean>(false);  
+    const [listOfBankAccounts, setListOfBankAccounts] = useState<BankAccount[]>([]);
+    
+    const redirect = useNavigate();        
 
     const refresh = useCallback(async () => {
         try {
@@ -38,13 +41,7 @@ const Home: FC<IRegisterFormProps> = (props) => {
             setUserDetails(user);
         }
         getFullName();
-    }, [props.cookieUser, redirect, refresh]);    
-
-    const [userDetails, setUserDetails] = useState<UserDetails>({id: -1, firstName: "aa", lastName: "bb"});
-    const handleShowCreateAccountModal = () => setShowCreateAccountModal(true);
-    const handleCloseCreateAccountModal = () => setShowCreateAccountModal(false);
-
-    const [showAlert, setShowAlert] = useState(false);
+    }, [props.cookieUser, redirect, refresh]);  
 
     const handleShowAlert = () => {
         setShowAlert(true);
@@ -53,8 +50,8 @@ const Home: FC<IRegisterFormProps> = (props) => {
         }, 3000);
     };
 
-    const [listOfBankAccounts, setListOfBankAccounts] = useState<BankAccount[]>([]);
-
+    const handleShowCreateAccountModal = () => setShowCreateAccountModal(true);
+    const handleCloseCreateAccountModal = () => setShowCreateAccountModal(false);
 
     const handleShowNewTransaction = () => {
         setShowNewTransaction(true);
@@ -67,8 +64,7 @@ const Home: FC<IRegisterFormProps> = (props) => {
         setShowNewTransaction(false);
     }
 
-    return(
-        
+    return(        
         <Container data-testid="home-component" className="mx-0 px-0" fluid style={{color: 'white'}}>
             <Header 
                 removeCookie={props.removeCookie}
@@ -81,7 +77,9 @@ const Home: FC<IRegisterFormProps> = (props) => {
                 </Alert>
             )}
             <Row className='height-100'>
-            <BankAccountList handleShowModal={handleShowCreateAccountModal} refresh={refresh} listOfBankAccounts={listOfBankAccounts}/>            
+                <BankAccountList handleShowModal={handleShowCreateAccountModal} 
+                                 refresh={refresh} 
+                                 listOfBankAccounts={listOfBankAccounts}/>            
             </Row>
             <Row className='width-100'>
             </Row>
@@ -93,9 +91,13 @@ const Home: FC<IRegisterFormProps> = (props) => {
                     refresh={refresh} 
                 />
             </Row>
-            <div>
-            
-            <ModalTransaction refresh={refresh} listOfBankAccounts={listOfBankAccounts} show={showNewTransaction} handleClose={handleCloseNewTransaction} handleSubmit={handleSubmitNewTransaction} onTransactionComplete={handleShowAlert}/>
+            <div>            
+                <ModalTransaction refresh={refresh} 
+                                  listOfBankAccounts={listOfBankAccounts} 
+                                  show={showNewTransaction} 
+                                  handleClose={handleCloseNewTransaction} 
+                                  handleSubmit={handleSubmitNewTransaction} 
+                                  onTransactionComplete={handleShowAlert} />
             </div>
             <Container>
                 <Row className="justify-content-center mt-4">

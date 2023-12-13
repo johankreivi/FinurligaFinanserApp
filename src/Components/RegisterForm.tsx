@@ -60,16 +60,13 @@ const RegisterForm: FC< IRegisterFormProps > = (props) => {
             lastName: values.lastName,
             password: values.password,
         }
-
-        
         try {
             let userResponse: ResponseUserAccountDto = await postUserAccount(postUser);
             if (userResponse.id !== undefined) {                
                 let loginResponse: ResponseLoginUserDto = await postLoginUser({ 
                     userName: values.username, 
                     password: values.password
-                });
-                
+                });                
                 if (loginResponse.isAuthorized) {
                     props.setCookie("user" , {id: loginResponse.id, userName: loginResponse.userName, isAuthorized: loginResponse.isAuthorized});          
                     navigate('/Home');
@@ -177,7 +174,6 @@ return(
                         </Form.Control.Feedback> 
                     </Form.Group>
 
-
                     <div className="text-center d-flex justify-content-between">
                         <Button href="/" variant="light" className='ms-5 btn-sm'>
                             Avbryt
@@ -193,7 +189,6 @@ return(
                 </Col>              
             </Row>
         </Form>
-
     </Container>  
     );
 }

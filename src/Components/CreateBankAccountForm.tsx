@@ -6,8 +6,7 @@ import { useFormik } from 'formik';
 import { postBankAccount } from "../Services/APIService";
 import { ResponseBankAccountDto } from "../Models/Dto/ResponseBankAccountDto";
 
-const CreateBankAccountForm: FC<ICreateBankAccountFormProps> = (props) => {    
-
+const CreateBankAccountForm: FC<ICreateBankAccountFormProps> = (props) => { 
     const [showBankAccountOrConfirmitionInModal, setShowBankAccountOrConfirmitionInModal] = useState(props.show); 
     const [bankAccountMessage, setBankAccountMessage] = useState<string>("");
 

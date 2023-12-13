@@ -8,16 +8,15 @@ const LOCALHOST = 'https://localhost:7030/api'
 
 export const postUserAccount = async (userAccount: PostUserAccountDto) => {
     try {   
-        const createdUser = await axios.post(`${LOCALHOST}/UserAccount/CreateUserAccount`, userAccount)
+        const createdUser = await axios.post(`${LOCALHOST}/UserAccount`, userAccount)
                           .then(response => response.data);                          
-        await postBankAccount({userAccountId: createdUser.id, nameOfAccount: `Privatkonto`});
-        
+        await postBankAccount({userAccountId: createdUser.id, nameOfAccount: `Privatkonto`});        
         return createdUser;
     
     } catch (error) {     
         console.log('Error when creating user: '+error)
     }    
-    };
+};
 
 export const postLoginUser = async (userAccount: PostLoginUserDto) => {
     try {   
@@ -37,7 +36,7 @@ export const postBankAccount = async (bankAccount: PostBankAccountDto) => {
     } catch (error) {     
         console.log('Error when creating bankaccount: '+error)
     }    
-}
+};
 
 export const getAllUserBankAccounts = async (userAccountId: number) => {    
     try {   
@@ -47,17 +46,17 @@ export const getAllUserBankAccounts = async (userAccountId: number) => {
     } catch (error) {     
         console.log('Error when creating bankaccount: '+error)
     }    
-}
+};
 
-export const getUserDetails = async (userAccountId: number) => {    
+export const getUserDetails = async (id: number) => {    
     try {   
-        return await axios.get(`${LOCALHOST}/UserAccount/GetUserInfo/${userAccountId}`)
+        return await axios.get(`${LOCALHOST}/UserAccount/Info/${id}`)
                           .then(response => response.data);
     
     } catch (error) {     
         console.log('Error when creating bankaccount: '+error)
     }    
-}
+};
 
 export const getBankAccountTransactions = async (id: number) => {
     try {   
@@ -67,17 +66,17 @@ export const getBankAccountTransactions = async (id: number) => {
     } catch (error) {     
         console.log('Error when getting transactions: '+error)
     } 
-}
+};
 
-export const getRecipientBankAccountDetails = async (accountNumber: number) => {
+export const getRecipientBankAccountDetails = async (bankAccountNumber: number) => {
     try {   
-        return await axios.get(`${LOCALHOST}/UserAccount/GetUserAccountByBankAccountNumber/${accountNumber}`)
+        return await axios.get(`${LOCALHOST}/UserAccount/BankAccount/${bankAccountNumber}`)
                           .then(response => response.data);
     
     } catch (error) {     
         console.log('Error when getting user account names: '+error)
     } 
-}
+};
 
 export const postTransaction = async (postTransactionDto: PostTransactionDto) => {
     try {   
@@ -87,7 +86,7 @@ export const postTransaction = async (postTransactionDto: PostTransactionDto) =>
     } catch (error) {     
         console.log('Error when creating transaction: '+error)
     }   
-}
+};
 
 export const deleteBankAccount = async (userId: number) => {
     try {   
@@ -95,4 +94,4 @@ export const deleteBankAccount = async (userId: number) => {
     } catch (error) {     
         console.log('Error when deleting bankaccount: '+error)
     }   
-}
+};

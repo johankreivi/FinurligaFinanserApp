@@ -7,9 +7,7 @@ import {PostTransactionDto} from '../Models/Dto/PostTransactionDto'
 import {getRecipientBankAccountDetails, postTransaction as postNewTransaction } from '../Services/APIService';
 
 const ModalTransaction: FC<IModalTransactionProps> = (props) => {
-  const [currentBalance, setCurrentBalance] = useState<number>(0);    
-  
-  // States för vilken input för ReceiverAccount som ska visas
+  const [currentBalance, setCurrentBalance] = useState<number>(0); 
   const [checked, setChecked] = useState(false);
   const [showInternalInput, setShowInternalInput]=useState(false);
   const [showExternalInput, setShowExternalInput]=useState(true);
@@ -55,7 +53,6 @@ const ModalTransaction: FC<IModalTransactionProps> = (props) => {
           amount: values.amount,
           message: values.message
         }
-        console.log(postTransaction);
         await postNewTransaction(postTransaction);
         props.refresh();
         formik.resetForm();
@@ -184,7 +181,6 @@ const ModalTransaction: FC<IModalTransactionProps> = (props) => {
                   <Form.Control
                     type="number"
                     placeholder="Kontonummer"
-                    // value={formik.values.receivingAccountNumber ?? 0}
                     onBlur={formik.handleBlur}
                     onChange={formik.handleChange}
                     name="receivingAccountNumber"
@@ -198,11 +194,9 @@ const ModalTransaction: FC<IModalTransactionProps> = (props) => {
               )}
               {showInternalInput && (
                 <Col>
-                  <Button 
-                    onClick={handleGetRecipient}
-                    >
+                  <Button onClick={handleGetRecipient}>
                     Visa mottagare
-                </Button>
+                  </Button>
                 </Col>
               )}
             </Row>

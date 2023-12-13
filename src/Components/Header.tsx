@@ -4,7 +4,6 @@ import { Button, Navbar } from 'react-bootstrap';
 import { Link, useNavigate } from "react-router-dom";
 import { IHeaderProps } from '../Models/Interfaces/IHeaderProps';
 
-
 const Header: FC<IHeaderProps> = (props) => {  
     const redirect = useNavigate();    
     const audioRef = useRef(new Audio('/oink.wav'));
