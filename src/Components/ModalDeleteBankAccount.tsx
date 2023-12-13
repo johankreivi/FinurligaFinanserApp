@@ -24,8 +24,7 @@ const ModalDeleteBankAccount: FC<IModalProps> = (props) => {
                     Ja
                 </Button>                
             </Modal.Footer>
-        </Modal>
-        
+        </Modal>        
     );
 };
 

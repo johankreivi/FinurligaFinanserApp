@@ -5,7 +5,6 @@ import { useFormik } from "formik";
 import * as Yup from 'yup';
 
 const ModalEditBankAccountName: FC<IModalProps> = (props) => {
-
     const validationSchema = Yup.object({
         bankAccountName: Yup.string()
             .min(2, 'Måste vara minst 2 tecken')
@@ -25,9 +24,10 @@ const ModalEditBankAccountName: FC<IModalProps> = (props) => {
     
     return (
         <Modal data-testid="edit-name" show={props.show} onHide={props.handleClose}>
-                <Modal.Header closeButton>
-                    <Modal.Title>Byt namn</Modal.Title>
-                </Modal.Header>
+            <Modal.Header closeButton>
+                <Modal.Title>Byt namn</Modal.Title>
+            </Modal.Header>
+            
             <Modal.Body>
                 <Form noValidate onSubmit={formik.handleSubmit}>
                     <Row className='align-items-center'>

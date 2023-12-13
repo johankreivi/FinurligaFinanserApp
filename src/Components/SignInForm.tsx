@@ -13,32 +13,32 @@ import { postLoginUser } from '../Services/APIService';
 import { ResponseLoginUserDto } from '../Models/Dto/ResponseLoginUserDto';
 
 const SignInForm: FC<IRegisterFormProps> = (props) => { 
-const redirect = useNavigate();
-const formik = useFormik({
-    initialValues: {
-        username: '',
-        password: '',
-    },
-    onSubmit: async values => {
-        let postLogin : PostLoginUserDto = {
-            userName: values.username,
-            password: values.password,
-        }
-
-        try {
-            let response : ResponseLoginUserDto = await postLoginUser(postLogin);         
-            if(response.isAuthorized){
-                props.setCookie("user" , {id: response.id, userName: response.userName, isAuthorized: response.isAuthorized});
-                redirect('/Home');
+    const redirect = useNavigate();
+    const formik = useFormik({
+        initialValues: {
+            username: '',
+            password: '',
+        },
+        onSubmit: async values => {
+            let postLogin : PostLoginUserDto = {
+                userName: values.username,
+                password: values.password,
             }
-        } catch (error) {
-            console.log(error);
-            if(props.setAlertMessage === undefined || props.handleAlert === undefined) return
-            props.setAlertMessage("Ett fel inträffade vid inloggning.");
-            props.handleAlert(false);
-        }
-    },
-});
+
+            try {
+                let response : ResponseLoginUserDto = await postLoginUser(postLogin);         
+                if(response.isAuthorized){
+                    props.setCookie("user" , {id: response.id, userName: response.userName, isAuthorized: response.isAuthorized});
+                    redirect('/Home');
+                }
+            } catch (error) {
+                console.log(error);
+                if(props.setAlertMessage === undefined || props.handleAlert === undefined) return
+                props.setAlertMessage("Ett fel inträffade vid inloggning.");
+                props.handleAlert(false);
+            }
+        },
+    });
 
 return(
     <Container className='p-2 text-center '>
@@ -88,7 +88,6 @@ return(
                 </Col>              
             </Row>
         </Form>
-
     </Container>  
     );
 }
